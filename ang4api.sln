@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ang4api", "ang4api\ang4api.csproj", "{0DCDE4F3-83FE-4789-9CF5-44CE72DBD91A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DCDE4F3-83FE-4789-9CF5-44CE72DBD91A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DCDE4F3-83FE-4789-9CF5-44CE72DBD91A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DCDE4F3-83FE-4789-9CF5-44CE72DBD91A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DCDE4F3-83FE-4789-9CF5-44CE72DBD91A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8DF42B48-F468-40C5-8BDF-14702903DA44}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://anglrn.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ang4api\\ang4api.csproj
+		SccProjectName1 = ang4api
+		SccLocalPath1 = ang4api
+	EndGlobalSection
+EndGlobal
