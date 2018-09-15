@@ -1,0 +1,17 @@
+﻿<div class="container">
+    <div class="col s12 white">
+        <div class="row  top-buffer">
+            <div class="col-md-3"> <label for="txtuserid">User Id:</label></div>
+            <div class="col-md-3">
+                <input type="text" id="txtuserid" class="form-control" [(ngModel)]="loginmodel.Userid" />
+            </div>
+        </div>
+        <div class="row  top-buffer">
+            <div class="col-md-3"><label for="txtpwd">Password:</label></div>
+            <div class="col-md-3"><input type="password" id="txtpwd" class="form-control" [(ngModel)]="loginmodel.Password" /></div>
+        </div>
+        <div class="row  top-buffer">
+            <button id="btnLogin" class="btn btn-primary" (click)="authenticate()">Login</button>
+        </div>
+    </div>
+</div>

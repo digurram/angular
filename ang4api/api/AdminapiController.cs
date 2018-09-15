@@ -10,6 +10,7 @@ using ang4api.Models;
 
 namespace ang4api.api
 {
+    [Authorize(Roles = "Admin")]
     public class AdminapiController : BaseAPIController
     {
 

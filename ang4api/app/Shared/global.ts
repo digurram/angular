@@ -1,0 +1,17 @@
+﻿export class Global {
+    //ENDPOINTS
+    public static BASE_ADMIN_ENDPOINT = "api/Adminapi/";
+    public static BASE_TICKET_ENDPOINT = "api/ticketapi/";
+    //METHOD CONSTANTS
+    public static BASE_TICKET_USERMASTER = "UserMaster/";
+    public static BASE_TICKET_STATUSMASTER = "StatusMaster/";
+    public static BASE_TICKET_PRIORITYMASTER = "PriorityMaster/";
+    public static BASE_TICKET_MODULEMASTER = "ModuleMaster/";
+    public static BASE_TICKET_APPMASTER = "AppMaster/";
+    public static BASE_TICKET_TYPEMASTER = "TypeMaster/";
+    public static BASE_TICKET_UPDATE = "Updateticket/";
+
+    
+
+
+}

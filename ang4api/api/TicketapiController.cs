@@ -8,7 +8,7 @@ namespace ang4api.api
 {
 
     [RoutePrefix("api/Ticketapi")]
-    [Authorize]
+    [Authorize(Roles = "Admin,BasicUser")]
     public class TicketapiController : BaseAPIController
     {
         [HttpGet]
