@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, transition } from '@angular/core';
 import { Itdictionary } from './Model/tdictionary';
 import { Title } from '@angular/platform-browser';
+import { AuthGuard } from './auth/auth.guard';
 
 @Component({
     selector: 'my-app',
@@ -21,13 +22,25 @@ export class AppComponent {
     routeCollection: Itdictionary[];
     constructor(private titleService: Title) {
         this.routeCollection = [];
-        this.routeCollection.push({ "key": "home", "keyValue": "Home" });
-        this.routeCollection.push({ "key": "Admin", "keyValue": "Admin Setup" });
-        this.routeCollection.push({ "key": "Ticket", "keyValue": "Ticket" });
+        if (this.isloggedin()) {
+            this.routeCollection.push({ "key": "home", "keyValue": "Home" });
+            this.routeCollection.push({ "key": "Admin", "keyValue": "Admin Setup" });
+            this.routeCollection.push({ "key": "Ticket", "keyValue": "Ticket" });
+        }
     }
 
     public setTitle(newTitle: string) {
         this.titleService.setTitle(newTitle);
+    }
+
+
+    private isloggedin(): boolean {
+        if (localStorage.getItem('userToken') != null) {
+         return   true;
+        }
+        else {
+            return   false;
+        }
     }
 
 
