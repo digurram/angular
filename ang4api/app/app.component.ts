@@ -9,7 +9,7 @@ import { MenuComponent } from './Components/menu.component';
 @Component({
     selector: 'my-app',
     template: `
-<menuitems></menuitems>
+<menu-items></menu-items>
                     <div class='container'>
                         <router-outlet></router-outlet>
                     </div>

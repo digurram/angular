@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
 
 
     isLoginError: boolean = false;
-    constructor(private userService: UserService, private router: Router, private menuComponent: MenuComponent) { }
+    constructor(private userService: UserService, private router: Router) { }
 
     ngOnInit() {
         this.Logout();
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
         this.userService.userAuthentication(this.loginmodel.Userid, this.loginmodel.Password).subscribe(
             (data: any) => {
                 localStorage.setItem('userToken', data.access_token);
-                this.menuComponent.ngOnInit();
+                //this.menuComponent.ngOnInit();
                 this.router.navigate(['/home']);
             },
             error => {

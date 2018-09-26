@@ -1,10 +1,10 @@
-﻿import { Component, Directive, ElementRef, HostListener, Input, Output, EventEmitter, OnInit, Injectable } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { IkeyValuePair } from '../Model/keyValuePair';
 import { UserService } from '../Service/user.service';
+import { Observable } from 'rxjs/Rx';
 
-@Injectable()
 @Component({
-    selector: 'menuitems',
+    selector: 'menu-items',
     template: `<div *ngIf='tickets'>
     <nav class='navbar navbar-inverse' >
         <div class='container-fluid' >
@@ -15,6 +15,7 @@ import { UserService } from '../Service/user.service';
       </nav>
         </div>`
 })
+
 
 export class MenuComponent implements OnInit {
     msg: any;
