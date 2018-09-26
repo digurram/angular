@@ -2,6 +2,7 @@
     //ENDPOINTS
     public static BASE_ADMIN_ENDPOINT = "api/Adminapi/";
     public static BASE_TICKET_ENDPOINT = "api/ticketapi/";
+    public static BASE_USER_ENDPOINT = "api/userapi/";
     //METHOD CONSTANTS
     public static BASE_TICKET_USERMASTER = "UserMaster/";
     public static BASE_TICKET_STATUSMASTER = "StatusMaster/";
@@ -10,7 +11,9 @@
     public static BASE_TICKET_APPMASTER = "AppMaster/";
     public static BASE_TICKET_TYPEMASTER = "TypeMaster/";
     public static BASE_TICKET_UPDATE = "Updateticket/";
-
+    public static BASE_USER_MENU = "GetMenuitems";
+    public static BASE_USER_LOGOUT = "Logout";
+    
     
 
 

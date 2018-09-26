@@ -201,11 +201,13 @@
     <Compile Include="api\AdminapiController.cs" />
     <Compile Include="api\BaseAPIController.cs" />
     <Compile Include="api\TicketapiController.cs" />
+    <Compile Include="api\UserapiController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\ServerRouteConstraint.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="common\Constants.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DBContext\ApplicationMaster.cs">
       <DependentUpon>TicketTrackerContext.tt</DependentUpon>
@@ -229,6 +231,15 @@
       <DependentUpon>TicketTrackerContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DBContext\FXTrade.cs">
+      <DependentUpon>TicketTrackerContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\Menu.cs">
+      <DependentUpon>TicketTrackerContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\MenuItem.cs">
+      <DependentUpon>TicketTrackerContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\MenuPermission.cs">
       <DependentUpon>TicketTrackerContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DBContext\ModuleMaster.cs">
@@ -256,6 +267,9 @@
       <DependentUpon>TicketTrackerContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DBContext\StatusMaster.cs">
+      <DependentUpon>TicketTrackerContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\sysdiagram.cs">
       <DependentUpon>TicketTrackerContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DBContext\Ticket.cs">
@@ -297,6 +311,9 @@
     <Compile Include="DBContext\UserMaster.cs">
       <DependentUpon>TicketTrackerContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBContext\UserRole.cs">
+      <DependentUpon>TicketTrackerContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBContext\USP_AuthenticateUser_Result.cs">
       <DependentUpon>TicketTrackerContext.tt</DependentUpon>
     </Compile>
@@ -321,18 +338,18 @@
     <Compile Include="DBContext\USP_GET_StatusMASTER_Result.cs">
       <DependentUpon>TicketTrackerContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBContext\vw_user_permissions.cs">
+      <DependentUpon>TicketTrackerContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\keyvalueModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\Components\admin.component.html" />
-    <Content Include="app\Components\admin.component.js" />
-    <Content Include="app\Components\home.component.js" />
+    <Content Include="app\Components\admin.component.html" />        
     <Content Include="app\Components\login.component.html" />
-    <Content Include="app\Components\ticket.component.html" />
-    <Content Include="app\Model\keyValuePair.js" />
+    <Content Include="app\Components\ticket.component.html" />    
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="DBContext\TicketTrackerContext.Context.tt">
@@ -354,6 +371,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="package.json" />
+    <Content Include="app\Model\keyValuePair.js.map" />
+    <Content Include="app\Components\admin.component.js.map" />
+    <Content Include="app\Components\home.component.js.map" />
     <EntityDeploy Include="DBContext\TicketTrackerContext.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>TicketTrackerContext.Designer.cs</LastGenOutput>
@@ -361,9 +381,6 @@
     <Content Include="DBContext\TicketTrackerContext.edmx.diagram">
       <DependentUpon>TicketTrackerContext.edmx</DependentUpon>
     </Content>
-    <Content Include="app\Model\keyValuePair.js.map" />
-    <Content Include="app\Components\admin.component.js.map" />
-    <Content Include="app\Components\home.component.js.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -377,7 +394,9 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="systemjs-angular-loader.js" />
     <Content Include="systemjs.config.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -421,6 +440,8 @@
     <TypeScriptCompile Include="app\Components\dropdown.component.ts" />
     <TypeScriptCompile Include="app\Components\home.component.ts" />
     <TypeScriptCompile Include="app\Components\login.component.ts" />
+    <TypeScriptCompile Include="app\Components\menu.component.ts" />
+    <TypeScriptCompile Include="app\Components\PageNotFound.component.ts" />
     <TypeScriptCompile Include="app\Components\ticket.component.ts" />
     <TypeScriptCompile Include="app\main.ts" />
     <TypeScriptCompile Include="app\Model\keyValuePair.ts" />
@@ -472,6 +493,12 @@
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>cd $(TargetDir)..\app
+
+del /S /Q *.js
+del /S /Q *.map</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -14,10 +14,19 @@ namespace ang4api.DBContext
     
     public partial class UserMaster
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public UserMaster()
+        {
+            this.UserRoles = new HashSet<UserRole>();
+        }
+    
         public int UserId { get; set; }
         public string FName { get; set; }
         public string LName { get; set; }
         public string Email { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }

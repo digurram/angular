@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\nagurram\source\repos\ang4api\ang4api\DBContext\TicketTrackerContext.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\nagurram\source\repos\angularmvc\angular5\ang4api\ang4api\DBContext\TicketTrackerContext.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

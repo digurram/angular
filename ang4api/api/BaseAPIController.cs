@@ -6,6 +6,8 @@ using System.Web.Http;
 using ang4api.DBContext;
 using System.Linq;
 using ang4api.Models;
+using System.Security.Principal;
+using System.Security.Claims;
 
 namespace ang4api.api
 {
@@ -61,6 +63,13 @@ namespace ang4api.api
         protected HttpResponseMessage BTypeMaster()
         {
             return ToJson(TicketDB.TypeMasters.Select(p => new keyvalueModel { Id = p.TypeId, keyValue = p.TypeDescription, IsDeleted = p.IsDeleted }).AsEnumerable());
+        }
+
+        protected  string GetClaimValue(string name)
+        {
+            ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;
+            var claim = claimsIdentity == null ? null : claimsIdentity?.FindFirst(name);
+            return claim == null ? null : claim.Value;
         }
 
     }

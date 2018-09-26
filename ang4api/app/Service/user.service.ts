@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
+import { Global } from '../Shared/global';
 
 
 
@@ -29,6 +30,18 @@ export class UserService {
         let options = { headers: headers };
         return this._http.post(url, body, options);
         
+    }
+
+    getusermenu(): Observable<any> {
+        var url = Global.BASE_USER_ENDPOINT+Global.BASE_USER_MENU;
+            return this._http.get(url);
+    }
+    userlogout(): Observable<any> {
+        localStorage.removeItem('userToken');
+        var url = Global.BASE_USER_ENDPOINT + Global.BASE_USER_LOGOUT;
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+        let options = { headers: headers };
+        return this._http.post(url, null, options);
     }
 
     private handleError(error: Response) {

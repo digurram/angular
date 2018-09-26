@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TicketTrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TicketTrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ApplicationMaster">
           <Key>
             <PropertyRef Name="ApplicationId" />
@@ -102,6 +102,32 @@
           <Property Name="TradeAllocationFinancialEventId" Type="int" />
           <Property Name="MatchStatusId" Type="int" />
         </EntityType>
+        <EntityType Name="MenuItems">
+          <Key>
+            <PropertyRef Name="MenuItemId" />
+          </Key>
+          <Property Name="MenuItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MenuId" Type="int" Nullable="false" />
+          <Property Name="link" Type="nvarchar" MaxLength="100" />
+          <Property Name="parentmenuid" Type="int" />
+          <Property Name="Sortorder" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TicketTracker.dbo.MenuPermission' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MenuPermission">
+          <Key>
+            <PropertyRef Name="MenuItemId" />
+          </Key>
+          <Property Name="MenuItemId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" />
+        </EntityType>
+        <EntityType Name="Menus">
+          <Key>
+            <PropertyRef Name="MenuId" />
+          </Key>
+          <Property Name="MenuId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="ModuleMaster">
           <Key>
             <PropertyRef Name="ModuleId" />
@@ -137,7 +163,7 @@
             <PropertyRef Name="RoleId" />
           </Key>
           <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="roleDescription" Type="nvarchar" MaxLength="100" />
+          <Property Name="RoleDescription" Type="nvarchar" MaxLength="100" />
           <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="RootCauseMaster">
@@ -156,6 +182,16 @@
           <Property Name="StatusDescription" Type="nvarchar" MaxLength="100" />
           <Property Name="statusOrder" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Tickets">
           <Key>
@@ -204,13 +240,6 @@
           <Property Name="ErrorCode" Type="nvarchar" MaxLength="300" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'TicketTracker.dbo.TrainingHistory' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="TrainingHistory">
-          <Property Name="Userid" Type="int" />
-          <Property Name="YearNo" Type="int" />
-          <Property Name="TrainigId" Type="int" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TrainingMaster">
           <Key>
@@ -237,6 +266,30 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
           <Property Name="LName" Type="nvarchar" MaxLength="100" />
           <Property Name="Email" Type="nvarchar" MaxLength="100" />
           <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="Mappingid" />
+          </Key>
+          <Property Name="Mappingid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TicketTracker.dbo.vw_user_permissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vw_user_permissions">
+          <Key>
+            <PropertyRef Name="menuitemid" />
+            <PropertyRef Name="userid" />
+            <PropertyRef Name="roleid" />
+          </Key>
+          <Property Name="displayname" Type="nvarchar" MaxLength="100" />
+          <Property Name="menuitemid" Type="int" Nullable="false" />
+          <Property Name="link" Type="nvarchar" MaxLength="100" />
+          <Property Name="parentmenuid" Type="int" />
+          <Property Name="sortorder" Type="int" />
+          <Property Name="userid" Type="int" Nullable="false" />
+          <Property Name="roleid" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Entity_Link_Entity">
           <End Role="Entity" Type="Self.Entity" Multiplicity="0..1" />
@@ -283,6 +336,42 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
             </Principal>
             <Dependent Role="FinancialEventSourceSwift">
               <PropertyRef Name="FinancialEventSourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuItems_Menus">
+          <End Role="Menus" Type="Self.Menus" Multiplicity="1" />
+          <End Role="MenuItems" Type="Self.MenuItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Menus">
+              <PropertyRef Name="MenuId" />
+            </Principal>
+            <Dependent Role="MenuItems">
+              <PropertyRef Name="MenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuPermission_MenuItems">
+          <End Role="MenuItems" Type="Self.MenuItems" Multiplicity="1" />
+          <End Role="MenuPermission" Type="Self.MenuPermission" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="MenuItems">
+              <PropertyRef Name="MenuItemId" />
+            </Principal>
+            <Dependent Role="MenuPermission">
+              <PropertyRef Name="MenuItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuPermission_RoleMaster">
+          <End Role="RoleMaster" Type="Self.RoleMaster" Multiplicity="0..1" />
+          <End Role="MenuPermission" Type="Self.MenuPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleMaster">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="MenuPermission">
+              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -394,6 +483,30 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserRoles_RoleMaster">
+          <End Role="RoleMaster" Type="Self.RoleMaster" Multiplicity="1" />
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleMaster">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_UserMaster">
+          <End Role="UserMaster" Type="Self.UserMaster" Multiplicity="1" />
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserMaster">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="Fact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Number" Type="int" Mode="In" />
           <Parameter Name="RetVal" Type="int" Mode="InOut" />
@@ -401,7 +514,6 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
         <Function Name="INS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Query" Type="varchar(max)" Mode="In" />
         </Function>
-        <Function Name="Proc_Get_Open_Tickets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Proc_GetTickets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Ticketid" Type="int" Mode="In" />
         </Function>
@@ -464,22 +576,43 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
           <EntitySet Name="FinancialEventSourceFlatFile" EntityType="Self.FinancialEventSourceFlatFile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FinancialEventSourceSwift" EntityType="Self.FinancialEventSourceSwift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FXTrade" EntityType="Self.FXTrade" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuItems" EntityType="Self.MenuItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Menus" EntityType="Self.Menus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ModuleMaster" EntityType="Self.ModuleMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriorityMaster" EntityType="Self.PriorityMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Resource" EntityType="Self.Resource" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleMaster" EntityType="Self.RoleMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RootCauseMaster" EntityType="Self.RootCauseMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StatusMaster" EntityType="Self.StatusMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trade" EntityType="Self.Trade" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TradeValidationError" EntityType="Self.TradeValidationError" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TypeMaster" EntityType="Self.TypeMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuPermission" EntityType="Self.MenuPermission" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MenuPermission].[MenuItemId] AS [MenuItemId], 
+    [MenuPermission].[RoleId] AS [RoleId]
+    FROM [dbo].[MenuPermission] AS [MenuPermission]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="TrainingMaster" EntityType="Self.TrainingMaster" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [TrainingMaster].[TrianingId] AS [TrianingId], 
     [TrainingMaster].[Details] AS [Details]
     FROM [dbo].[TrainingMaster] AS [TrainingMaster]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_user_permissions" EntityType="Self.vw_user_permissions" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_user_permissions].[displayname] AS [displayname], 
+    [vw_user_permissions].[menuitemid] AS [menuitemid], 
+    [vw_user_permissions].[link] AS [link], 
+    [vw_user_permissions].[parentmenuid] AS [parentmenuid], 
+    [vw_user_permissions].[sortorder] AS [sortorder], 
+    [vw_user_permissions].[userid] AS [userid], 
+    [vw_user_permissions].[roleid] AS [roleid]
+    FROM [dbo].[vw_user_permissions] AS [vw_user_permissions]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Entity_Link_Entity" Association="Self.FK_Entity_Link_Entity">
             <End Role="Entity" EntitySet="Entity" />
@@ -496,6 +629,18 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
           <AssociationSet Name="FK_FinancialEventSourceSwift_FinancialEventSource" Association="Self.FK_FinancialEventSourceSwift_FinancialEventSource">
             <End Role="FinancialEventSource" EntitySet="FinancialEventSource" />
             <End Role="FinancialEventSourceSwift" EntitySet="FinancialEventSourceSwift" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuItems_Menus" Association="Self.FK_MenuItems_Menus">
+            <End Role="Menus" EntitySet="Menus" />
+            <End Role="MenuItems" EntitySet="MenuItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuPermission_MenuItems" Association="Self.FK_MenuPermission_MenuItems">
+            <End Role="MenuItems" EntitySet="MenuItems" />
+            <End Role="MenuPermission" EntitySet="MenuPermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuPermission_RoleMaster" Association="Self.FK_MenuPermission_RoleMaster">
+            <End Role="RoleMaster" EntitySet="RoleMaster" />
+            <End Role="MenuPermission" EntitySet="MenuPermission" />
           </AssociationSet>
           <AssociationSet Name="FK_ModuleMaster_ModuleMaster" Association="Self.FK_ModuleMaster_ModuleMaster">
             <End Role="ModuleMaster" EntitySet="ModuleMaster" />
@@ -533,9 +678,16 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
             <End Role="Trade" EntitySet="Trade" />
             <End Role="TradeValidationError" EntitySet="TradeValidationError" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_RoleMaster" Association="Self.FK_UserRoles_RoleMaster">
+            <End Role="RoleMaster" EntitySet="RoleMaster" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_UserMaster" Association="Self.FK_UserRoles_UserMaster">
+            <End Role="UserMaster" EntitySet="UserMaster" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TicketTrackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -692,8 +844,10 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
             <PropertyRef Name="RoleId" />
           </Key>
           <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="roleDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" />
+          <Property Name="RoleDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MenuPermissions" Relationship="TicketTrackerModel.FK_MenuPermission_RoleMaster" FromRole="RoleMaster" ToRole="MenuPermission" />
+          <NavigationProperty Name="UserRoles" Relationship="TicketTrackerModel.FK_UserRoles_RoleMaster" FromRole="RoleMaster" ToRole="UserRole" />
         </EntityType>
         <EntityType Name="RootCauseMaster">
           <Key>
@@ -788,6 +942,7 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
           <Property Name="LName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="UserRoles" Relationship="TicketTrackerModel.FK_UserRoles_UserMaster" FromRole="UserMaster" ToRole="UserRole" />
         </EntityType>
         <EntityType Name="TrainingMaster">
           <Key>
@@ -1026,25 +1181,25 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
             <End Role="TradeValidationError" EntitySet="TradeValidationErrors" />
           </AssociationSet>
           <FunctionImport Name="ufn_CSVToTable" IsComposable="true" ReturnType="Collection(TicketTrackerModel.ufn_CSVToTable_Result)">
-            <Parameter Name="StringInput" Mode="In" Type="String" />
+          <Parameter Name="StringInput" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="ufnGetChilds" IsComposable="true" ReturnType="Collection(TicketTrackerModel.ufnGetChilds_Result)">
-            <Parameter Name="parentId" Mode="In" Type="Int32" />
+          <Parameter Name="parentId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Fact">
             <Parameter Name="Number" Mode="In" Type="Int32" />
             <Parameter Name="RetVal" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="INS">
-            <Parameter Name="Query" Mode="In" Type="String" />
+          <Parameter Name="Query" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="Proc_Get_Open_Tickets" ReturnType="Collection(TicketTrackerModel.Proc_Get_Open_Tickets_Result)" />
           <FunctionImport Name="Proc_GetTickets" ReturnType="Collection(TicketTrackerModel.Proc_GetTickets_Result)">
-            <Parameter Name="Ticketid" Mode="In" Type="Int32" />
+          <Parameter Name="Ticketid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_getDEtails" ReturnType="Collection(TicketTrackerModel.sp_getDEtails_Result)" />
           <FunctionImport Name="SP_LogException">
-            <Parameter Name="xmlException" Mode="In" Type="String" />
+          <Parameter Name="xmlException" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="USP_AuthenticateUser" ReturnType="Collection(TicketTrackerModel.USP_AuthenticateUser_Result)">
             <Parameter Name="UserId" Mode="In" Type="String" />
@@ -1061,13 +1216,39 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
           <FunctionImport Name="USP_GET_StatusMASTER" ReturnType="Collection(TicketTrackerModel.USP_GET_StatusMASTER_Result)" />
           <FunctionImport Name="USP_GETTypdMASTER" ReturnType="Collection(TicketTrackerModel.USP_GETTypdMASTER_Result)" />
           <FunctionImport Name="USP_INSERT_RootCause">
-            <Parameter Name="Description" Mode="In" Type="String" />
+          <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="usp_mlprun" />
           <FunctionImport Name="USP_UPDATE_RootCause">
             <Parameter Name="RootCauseId" Mode="In" Type="Int32" />
             <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="MenuItems" EntityType="TicketTrackerModel.MenuItem" />
+          <EntitySet Name="Menus" EntityType="TicketTrackerModel.Menu" />
+          <EntitySet Name="sysdiagrams" EntityType="TicketTrackerModel.sysdiagram" />
+          <EntitySet Name="UserRoles" EntityType="TicketTrackerModel.UserRole" />
+          <EntitySet Name="MenuPermissions" EntityType="TicketTrackerModel.MenuPermission" />
+          <EntitySet Name="vw_user_permissions" EntityType="TicketTrackerModel.vw_user_permissions" />
+          <AssociationSet Name="FK_MenuItems_Menus" Association="TicketTrackerModel.FK_MenuItems_Menus">
+            <End Role="Menu" EntitySet="Menus" />
+            <End Role="MenuItem" EntitySet="MenuItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuPermission_MenuItems" Association="TicketTrackerModel.FK_MenuPermission_MenuItems">
+            <End Role="MenuItem" EntitySet="MenuItems" />
+            <End Role="MenuPermission" EntitySet="MenuPermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuPermission_RoleMaster" Association="TicketTrackerModel.FK_MenuPermission_RoleMaster">
+            <End Role="RoleMaster" EntitySet="RoleMasters" />
+            <End Role="MenuPermission" EntitySet="MenuPermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_RoleMaster" Association="TicketTrackerModel.FK_UserRoles_RoleMaster">
+            <End Role="RoleMaster" EntitySet="RoleMasters" />
+            <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_UserMaster" Association="TicketTrackerModel.FK_UserRoles_UserMaster">
+            <End Role="UserMaster" EntitySet="UserMasters" />
+            <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="Proc_Get_Open_Tickets_Result">
           <Property Type="Int32" Name="TicketId" Nullable="false" />
@@ -1150,6 +1331,129 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
           <Property Type="Int32" Name="TypeOrder" Nullable="true" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="true" />
         </ComplexType>
+        <EntityType Name="MenuItem">
+          <Key>
+            <PropertyRef Name="MenuItemId" />
+          </Key>
+          <Property Name="MenuItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MenuId" Type="Int32" Nullable="false" />
+          <Property Name="link" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="parentmenuid" Type="Int32" />
+          <Property Name="Sortorder" Type="Int32" />
+          <NavigationProperty Name="Menu" Relationship="TicketTrackerModel.FK_MenuItems_Menus" FromRole="MenuItem" ToRole="Menu" />
+          <NavigationProperty Name="MenuPermission" Relationship="TicketTrackerModel.FK_MenuPermission_MenuItems" FromRole="MenuItem" ToRole="MenuPermission" />
+        </EntityType>
+        <EntityType Name="Menu">
+          <Key>
+            <PropertyRef Name="MenuId" />
+          </Key>
+          <Property Name="MenuId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DisplayName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MenuItems" Relationship="TicketTrackerModel.FK_MenuItems_Menus" FromRole="Menu" ToRole="MenuItem" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="Mappingid" />
+          </Key>
+          <Property Name="Mappingid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RoleMaster" Relationship="TicketTrackerModel.FK_UserRoles_RoleMaster" FromRole="UserRole" ToRole="RoleMaster" />
+          <NavigationProperty Name="UserMaster" Relationship="TicketTrackerModel.FK_UserRoles_UserMaster" FromRole="UserRole" ToRole="UserMaster" />
+        </EntityType>
+        <EntityType Name="MenuPermission">
+          <Key>
+            <PropertyRef Name="MenuItemId" />
+          </Key>
+          <Property Name="MenuItemId" Type="Int32" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" />
+          <NavigationProperty Name="MenuItem" Relationship="TicketTrackerModel.FK_MenuPermission_MenuItems" FromRole="MenuPermission" ToRole="MenuItem" />
+          <NavigationProperty Name="RoleMaster" Relationship="TicketTrackerModel.FK_MenuPermission_RoleMaster" FromRole="MenuPermission" ToRole="RoleMaster" />
+        </EntityType>
+        <EntityType Name="vw_user_permissions">
+          <Key>
+            <PropertyRef Name="menuitemid" />
+            <PropertyRef Name="userid" />
+            <PropertyRef Name="roleid" />
+          </Key>
+          <Property Name="displayname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="menuitemid" Type="Int32" Nullable="false" />
+          <Property Name="link" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="parentmenuid" Type="Int32" />
+          <Property Name="sortorder" Type="Int32" />
+          <Property Name="userid" Type="Int32" Nullable="false" />
+          <Property Name="roleid" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_MenuItems_Menus">
+          <End Type="TicketTrackerModel.Menu" Role="Menu" Multiplicity="1" />
+          <End Type="TicketTrackerModel.MenuItem" Role="MenuItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Menu">
+              <PropertyRef Name="MenuId" />
+            </Principal>
+            <Dependent Role="MenuItem">
+              <PropertyRef Name="MenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuPermission_MenuItems">
+          <End Type="TicketTrackerModel.MenuItem" Role="MenuItem" Multiplicity="1" />
+          <End Type="TicketTrackerModel.MenuPermission" Role="MenuPermission" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="MenuItem">
+              <PropertyRef Name="MenuItemId" />
+            </Principal>
+            <Dependent Role="MenuPermission">
+              <PropertyRef Name="MenuItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuPermission_RoleMaster">
+          <End Type="TicketTrackerModel.RoleMaster" Role="RoleMaster" Multiplicity="0..1" />
+          <End Type="TicketTrackerModel.MenuPermission" Role="MenuPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleMaster">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="MenuPermission">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_RoleMaster">
+          <End Type="TicketTrackerModel.RoleMaster" Role="RoleMaster" Multiplicity="1" />
+          <End Type="TicketTrackerModel.UserRole" Role="UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleMaster">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_UserMaster">
+          <End Type="TicketTrackerModel.UserMaster" Role="UserMaster" Multiplicity="1" />
+          <End Type="TicketTrackerModel.UserRole" Role="UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserMaster">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1297,8 +1601,8 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
           <EntitySetMapping Name="RoleMasters">
             <EntityTypeMapping TypeName="TicketTrackerModel.RoleMaster">
               <MappingFragment StoreEntitySet="RoleMaster">
+                <ScalarProperty Name="RoleDescription" ColumnName="RoleDescription" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="roleDescription" ColumnName="roleDescription" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1417,22 +1721,6 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="Fact" FunctionName="TicketTrackerModel.Store.Fact" />
           <FunctionImportMapping FunctionImportName="INS" FunctionName="TicketTrackerModel.Store.INS" />
-          <FunctionImportMapping FunctionImportName="Proc_Get_Open_Tickets" FunctionName="TicketTrackerModel.Store.Proc_Get_Open_Tickets">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="TicketTrackerModel.Proc_Get_Open_Tickets_Result">
-                <ScalarProperty Name="TicketId" ColumnName="TicketId" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Createddate" ColumnName="Createddate" />
-                <ScalarProperty Name="AssignedTo" ColumnName="AssignedTo" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
-                <ScalarProperty Name="Priority" ColumnName="Priority" />
-                <ScalarProperty Name="RootCause" ColumnName="RootCause" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="Proc_GetTickets" FunctionName="TicketTrackerModel.Store.Proc_GetTickets">
             <ResultMapping>
               <ComplexTypeMapping TypeName="TicketTrackerModel.Proc_GetTickets_Result">
@@ -1549,6 +1837,66 @@ warning 6002: The table/view 'TicketTracker.dbo.TrainingMaster' does not have a 
           <FunctionImportMapping FunctionImportName="USP_INSERT_RootCause" FunctionName="TicketTrackerModel.Store.USP_INSERT_RootCause" />
           <FunctionImportMapping FunctionImportName="usp_mlprun" FunctionName="TicketTrackerModel.Store.usp_mlprun" />
           <FunctionImportMapping FunctionImportName="USP_UPDATE_RootCause" FunctionName="TicketTrackerModel.Store.USP_UPDATE_RootCause" />
+          <EntitySetMapping Name="MenuItems">
+            <EntityTypeMapping TypeName="TicketTrackerModel.MenuItem">
+              <MappingFragment StoreEntitySet="MenuItems">
+                <ScalarProperty Name="Sortorder" ColumnName="Sortorder" />
+                <ScalarProperty Name="parentmenuid" ColumnName="parentmenuid" />
+                <ScalarProperty Name="link" ColumnName="link" />
+                <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+                <ScalarProperty Name="MenuItemId" ColumnName="MenuItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Menus">
+            <EntityTypeMapping TypeName="TicketTrackerModel.Menu">
+              <MappingFragment StoreEntitySet="Menus">
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="TicketTrackerModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="TicketTrackerModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Mappingid" ColumnName="Mappingid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuPermissions">
+            <EntityTypeMapping TypeName="TicketTrackerModel.MenuPermission">
+              <MappingFragment StoreEntitySet="MenuPermission">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="MenuItemId" ColumnName="MenuItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_user_permissions">
+            <EntityTypeMapping TypeName="TicketTrackerModel.vw_user_permissions">
+              <MappingFragment StoreEntitySet="vw_user_permissions">
+                <ScalarProperty Name="roleid" ColumnName="roleid" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="sortorder" ColumnName="sortorder" />
+                <ScalarProperty Name="parentmenuid" ColumnName="parentmenuid" />
+                <ScalarProperty Name="link" ColumnName="link" />
+                <ScalarProperty Name="menuitemid" ColumnName="menuitemid" />
+                <ScalarProperty Name="displayname" ColumnName="displayname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

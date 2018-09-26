@@ -47,6 +47,12 @@ namespace ang4api.DBContext
         public virtual DbSet<TypeMaster> TypeMasters { get; set; }
         public virtual DbSet<UserMaster> UserMasters { get; set; }
         public virtual DbSet<TrainingMaster> TrainingMasters { get; set; }
+        public virtual DbSet<MenuItem> MenuItems { get; set; }
+        public virtual DbSet<Menu> Menus { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
+        public virtual DbSet<MenuPermission> MenuPermissions { get; set; }
+        public virtual DbSet<vw_user_permissions> vw_user_permissions { get; set; }
     
         [DbFunction("TicketTrackerEntities", "ufn_CSVToTable")]
         public virtual IQueryable<ufn_CSVToTable_Result> ufn_CSVToTable(string stringInput)
