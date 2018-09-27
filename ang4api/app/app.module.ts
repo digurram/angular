@@ -17,14 +17,16 @@ import { AuthGuard } from './auth/auth.guard';
 import { UserService } from "././Service/user.service";
 import { AuthInterceptor } from "./auth/auth.interceptor";
 import { MenuComponent } from './Components/menu.component';
+import { MessageService } from './Service/message.service';
+import { NotAuthorizedComponent } from './Components/notauthorized.component';
 
 
 
 
 @NgModule({
     imports: [BrowserModule, ReactiveFormsModule, HttpClientModule, routing, Ng2Bs3ModalModule, FormsModule],
-    declarations: [AppComponent, AdminComponent, HomeComponent, TicketComponent, DropdownComponent, LoginComponent, PageNotFoundComponent, MenuComponent],
-    providers: [{ provide: APP_BASE_HREF, useValue: '/' }, AdminService, AuthGuard, UserService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+    declarations: [AppComponent, AdminComponent, HomeComponent, TicketComponent, DropdownComponent, LoginComponent, PageNotFoundComponent, MenuComponent, NotAuthorizedComponent],
+    providers: [{ provide: APP_BASE_HREF, useValue: '/' }, AdminService, AuthGuard, UserService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, MessageService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

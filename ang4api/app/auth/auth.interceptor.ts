@@ -4,11 +4,12 @@ import { UserService } from "../Service/user.service";
 import 'rxjs/add/operator/do';
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { Location } from '@angular/common';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private router: Router) { }
+    constructor(private router: Router, private location: Location) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (req.headers.get('No-Auth') == "True")
@@ -20,11 +21,17 @@ export class AuthInterceptor implements HttpInterceptor {
             });
             return next.handle(clonedreq)
                 .do(
-                succ => { },
-                err => {
-                    if (err.status === 401)
-                        this.router.navigateByUrl('/login');
-                }
+                    succ => { },
+                    err => {
+                        if (err.status === 401)
+                            if (localStorage.getItem('userToken') != null) {
+                               // this.location.back();
+                                this.router.navigateByUrl('/NotAuthorized');
+                            }
+                            else {
+                                this.router.navigateByUrl('/login');
+                            }
+                    }
                 );
         }
         else {

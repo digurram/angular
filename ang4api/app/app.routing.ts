@@ -7,14 +7,16 @@ import { TicketComponent } from './components/ticket.component';
 import { LoginComponent } from './components/login.component';
 import { PageNotFoundComponent } from './components/PageNotFound.component';
 import { AuthGuard } from './auth/auth.guard';
+import { NotAuthorizedComponent } from './Components/notauthorized.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
-    { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
-    { path: 'Admin', component: AdminComponent, canActivate: [AuthGuard]},
+    { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: 'Admin', component: AdminComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'Ticket', component: TicketComponent, canActivate: [AuthGuard] },
-     { path: '**', component: PageNotFoundComponent, canActivate: [AuthGuard] }
+    { path: 'NotAuthorized', component: NotAuthorizedComponent },
+    { path: '**', component: PageNotFoundComponent, canActivate: [AuthGuard] }
 ];
 
 export const routing: ModuleWithProviders =

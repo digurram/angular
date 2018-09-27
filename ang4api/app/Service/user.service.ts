@@ -36,12 +36,13 @@ export class UserService {
         var url = Global.BASE_USER_ENDPOINT+Global.BASE_USER_MENU;
             return this._http.get(url);
     }
-    userlogout(): Observable<any> {
+    userlogout(): void {
+        var body = {};
         localStorage.removeItem('userToken');
         var url = Global.BASE_USER_ENDPOINT + Global.BASE_USER_LOGOUT;
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
         let options = { headers: headers };
-        return this._http.post(url, null, options);
+        this._http.post(url, body, options);
     }
 
     private handleError(error: Response) {
