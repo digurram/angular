@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { IkeyValuePair } from '../Model/keyValuePair';
+import { IUserModel } from '../Model/userModel';
 import { UserService } from '../Service/user.service';
 import { Observable } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
@@ -7,14 +8,14 @@ import { MessageService } from '../Service/message.service';
 import { Router } from "@angular/router";
 @Component({
     selector: 'menu-items',
-    template: `<div *ngIf='routeCollection'>
+    template: `<div *ngIf='userModel'>
     <nav class='navbar navbar-inverse' >
         <div class='container-fluid' >
             <ul class='nav navbar-nav' >
-               <li  *ngFor="let cols of routeCollection"> <a [routerLink]="[cols.key]" > {{ cols.keyValue }} </a></li >
+               <li  *ngFor="let cols of userModel.routeCollection"> <a [routerLink]="[cols.key]" > {{ cols.keyValue }} </a></li >
             </ul>
         <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{userModel.UserName}}</a></li>
         <li><a href="#" (click)="logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         </ul>
         </div>
@@ -25,20 +26,20 @@ import { Router } from "@angular/router";
 
 export class MenuComponent implements OnInit {
     msg: any;
-    currentUser: string;
-    routeCollection: IkeyValuePair[];
+    userModel: IUserModel;
+    //routeCollection: IkeyValuePair[];
     subscription: Subscription;
     constructor(public messageService: MessageService, private userService: UserService, private router: Router) {
        // this.routeCollection = [];
     }
 
     ngOnInit(): void {
-        if (this.routeCollection == null) {
+        if (this.userModel == null) {
             this.LoadMenus();
         }
         this.subscription = this.messageService.message.subscribe(
             (message) => {
-                this.routeCollection = message;
+                this.userModel = message;
                 console.log(message);
             }
         );
@@ -53,7 +54,7 @@ export class MenuComponent implements OnInit {
     }
 
     logout(): void {
-        this.routeCollection = null;
+        this.userModel = null;
         this.userService.userlogout();
         this.router.navigateByUrl('/login');
     }

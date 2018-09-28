@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
     constructor(private userService: UserService, private router: Router, public messageService: MessageService) { }
 
     ngOnInit() {
-        this.Logout();
+        this.logout();
         this.loginmodel = <IloginModel>{
             Userid: "",
             Password: "",
@@ -29,12 +29,12 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    Logout() {
+    logout() {
         console.log('first logout');
         this.userService.userlogout();
     }
 
-    LoadMenus(): void {
+    loadMenus(): void {
         this.userService.getusermenu()
             .subscribe(routeCollection => {
                 this.messageService.setMessage(routeCollection);
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
         this.userService.userAuthentication(this.loginmodel.Userid, this.loginmodel.Password).subscribe(
             (data: any) => {
                 localStorage.setItem('userToken', data.access_token);
-                this.LoadMenus();
+                this.loadMenus();
                 this.router.navigate(['/home']);
             },
             error => {

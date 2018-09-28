@@ -449,6 +449,7 @@
     <TypeScriptCompile Include="app\Model\loginModel.ts" />
     <TypeScriptCompile Include="app\Model\tdictionary.ts" />
     <TypeScriptCompile Include="app\Model\ticketModel.ts" />
+    <TypeScriptCompile Include="app\Model\userModel.ts" />
     <TypeScriptCompile Include="app\Service\admin.service.ts" />
     <TypeScriptCompile Include="app\Service\message.service.ts" />
     <TypeScriptCompile Include="app\Service\user.service.ts" />

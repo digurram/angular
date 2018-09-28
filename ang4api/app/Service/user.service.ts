@@ -37,6 +37,7 @@ export class UserService {
             return this._http.get(url);
     }
     userlogout(): void {
+        console.log('logoutservice called');
         var body = {};
         localStorage.removeItem('userToken');
         var url = Global.BASE_USER_ENDPOINT + Global.BASE_USER_LOGOUT;

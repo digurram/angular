@@ -20,7 +20,9 @@ namespace ang4api.api
             var menus = (from p in TicketDB.vw_user_permissions
                          where p.userid == userid
                          select new { key= p.link, keyValue=p.displayname }).ToList();
-            return ToJson(menus);
+            string userName = GetClaimValue(Constants.LastName) + ", " + GetClaimValue(Constants.FirstName);
+
+            return ToJson(new { Userid = userid, UserName = userName, routeCollection = menus });
         }
 
 
