@@ -370,10 +370,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="package.json" />
-    <Content Include="app\Model\keyValuePair.js.map" />
-    <Content Include="app\Components\admin.component.js.map" />
-    <Content Include="app\Components\home.component.js.map" />
+    <Content Include="package.json" />    
     <EntityDeploy Include="DBContext\TicketTrackerContext.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>TicketTrackerContext.Designer.cs</LastGenOutput>
