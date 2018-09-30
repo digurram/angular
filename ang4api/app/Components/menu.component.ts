@@ -40,7 +40,7 @@ export class MenuComponent implements OnInit {
         this.subscription = this.messageService.message.subscribe(
             (message) => {
                 this.userModel = message;
-                console.log(message);
+               // console.log(message);
             }
         );
     }

@@ -18,10 +18,12 @@ export class LoginComponent implements OnInit {
 
 
     isLoginError: boolean = false;
-    constructor(private userService: UserService, private router: Router, public messageService: MessageService) { }
+    constructor(private userService: UserService, private router: Router, public messageService: MessageService) {
+        this.logout();
+    }
 
     ngOnInit() {
-        this.logout();
+      //  this.logout();
         this.loginmodel = <IloginModel>{
             Userid: "",
             Password: "",
@@ -35,6 +37,7 @@ export class LoginComponent implements OnInit {
     }
 
     loadMenus(): void {
+        console.log('i am called menus')
         this.userService.getusermenu()
             .subscribe(routeCollection => {
                 this.messageService.setMessage(routeCollection);

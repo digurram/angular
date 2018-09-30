@@ -56,7 +56,7 @@
             <div class="tab-content">
                 <div id="home" class="tab-pane fade in active">
                     <div class="row top-buffer">
-                        <div class="col-md-2"><label for="txtticketid">Ticket Id</label></div><div class="col-md-4"><input type="text" id="txtticketid" [(ngModel)]="ticket.TicketId" class="form-control" /> </div>
+                        <div class="col-md-2"><label for="txtticketid">Ticket Id</label></div><div class="col-md-4"><input type="text" id="txtticketid" [(ngModel)]="ticket.TicketId" class="form-control" [disabled]="ticket.TicketId>0" /> </div>
                         <div class="col-md-2"><label for="txttitile">Title</label></div><div class="col-md-4"><input type="text" id="txttitile" [(ngModel)]="ticket.Title" class="form-control" /> </div>
                     </div>
                     <div class="row top-buffer">
