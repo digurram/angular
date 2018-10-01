@@ -8,6 +8,7 @@ using System.Linq;
 using ang4api.Models;
 using System.Security.Principal;
 using System.Security.Claims;
+using log4net;
 
 namespace ang4api.api
 {
@@ -21,7 +22,7 @@ namespace ang4api.api
         /// https://scotch.io/@kashyapmukkamala/using-http-interceptor-with-angular2
         /// https://www.youtube.com/watch?v=rbHSTJBhJ44
 
-
+        public static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected readonly TicketTrackerEntities TicketDB = new TicketTrackerEntities();
         protected HttpResponseMessage ToJson(dynamic obj)
         {

@@ -94,7 +94,7 @@ export class AdminComponent implements OnInit{
                 );
                 break;
             case DBOperation.update:
-                this._adminservice.put(Global.BASE_ADMIN_ENDPOINT, formData.value.Id, formData.value).subscribe(
+                this._adminservice.put(Global.BASE_ADMIN_ENDPOINT + Global.BASE_UPDATE_APPLICATION, formData.value.Id, formData.value).subscribe(
                     data => {
                         if (data == 1) //Success
                         {
@@ -113,7 +113,7 @@ export class AdminComponent implements OnInit{
                 );
                 break;
             case DBOperation.delete:
-                this._adminservice.delete(Global.BASE_ADMIN_ENDPOINT, formData.value.Id).subscribe(
+                this._adminservice.delete(Global.BASE_ADMIN_ENDPOINT + Global.BASE_DELETE_APPLICATION, formData.value.Id).subscribe(
                     data => {
                         if (data == 1) //Success
                         {

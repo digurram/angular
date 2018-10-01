@@ -4,6 +4,9 @@
     public static BASE_TICKET_ENDPOINT = "api/ticketapi/";
     public static BASE_USER_ENDPOINT = "api/userapi/";
     //METHOD CONSTANTS
+
+    public static BASE_UPDATE_APPLICATION = "Updateapplication/";
+    public static BASE_DELETE_APPLICATION ="deleteapplication/";
     public static BASE_TICKET_USERMASTER = "UserMaster/";
     public static BASE_TICKET_STATUSMASTER = "StatusMaster/";
     public static BASE_TICKET_PRIORITYMASTER = "PriorityMaster/";

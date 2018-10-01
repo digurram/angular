@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ang4api.Handlers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,20 +11,25 @@ namespace ang4api
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-
+            //  GlobalConfiguration.Configuration.MessageHandlers.Add(new MessageLoggingHandler());
             // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
                  name: "ActionApi",
                  routeTemplate: "api/{controller}/{action}/{id}",
-                 defaults: new { id = RouteParameter.Optional }
+                 defaults: new { id = RouteParameter.Optional },
+                 constraints: null,
+                 handler: new MessageLoggingHandler()
+
             );
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                defaults: new { id = RouteParameter.Optional },
+                constraints: null,
+                handler: new MessageLoggingHandler()
             );
         }
     }

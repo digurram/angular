@@ -16,16 +16,18 @@ namespace ang4api.api
 
         public HttpResponseMessage Get()
         {
+            Log.Debug("working ");
             return BAppMaster();
         }
 
+        [HttpPost]
         public HttpResponseMessage Post([FromBody]keyvalueModel value)
         {
             TicketDB.ApplicationMasters.Add(new ApplicationMaster() { ApplicationId = value.Id, ApplicationName = value.keyValue, IsDeleted = false });
             return ToJson(TicketDB.SaveChanges());
         }
 
-
+        [HttpPut, Route("updateapplication/{id}")]
         public HttpResponseMessage Put(int id, [FromBody]keyvalueModel value)
         {
             ApplicationMaster _applicationMaster = new ApplicationMaster() { ApplicationId = value.Id, ApplicationName = value.keyValue, IsDeleted = false };
@@ -34,6 +36,7 @@ namespace ang4api.api
         }
 
 
+        [HttpDelete, Route("deleteapplication/{id}")]
         public HttpResponseMessage Delete(int id)
         {
             TicketDB.ApplicationMasters.Remove(TicketDB.ApplicationMasters.FirstOrDefault(x => x.ApplicationId == id));

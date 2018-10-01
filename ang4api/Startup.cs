@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using ang4api.Handlers;
 
 [assembly: OwinStartup(typeof(ang4api.Startup))]
 namespace ang4api
@@ -21,12 +22,13 @@ namespace ang4api
     {
         public void Configuration(IAppBuilder app)
         {
+            log4net.Config.XmlConfigurator.Configure();
+            
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
             HttpConfiguration config = new HttpConfiguration();
             ConfigureOAuth(app);
             WebApiConfig.Register(config);
