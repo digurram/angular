@@ -11,6 +11,7 @@ using ang4api.Models;
 namespace ang4api.api
 {
     [Authorize(Roles = "Admin")]
+    [RoutePrefix("api/adminapi")]
     public class AdminapiController : BaseAPIController
     {
 
@@ -25,6 +26,7 @@ namespace ang4api.api
             TicketDB.ApplicationMasters.Add(new ApplicationMaster() { ApplicationId = value.Id, ApplicationName = value.keyValue, IsDeleted = false });
             return ToJson(TicketDB.SaveChanges());
         }
+
 
         [HttpPut, Route("updateapplication/{id}")]
         public HttpResponseMessage Put(int id, [FromBody]keyvalueModel value)
