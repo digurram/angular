@@ -49,19 +49,14 @@ namespace ang4api.Handlers
         protected override async Task IncommingMessageAsync(string correlationId, string requestInfo, byte[] message)
         {
             await Task.Run(() =>
-            {
-                Log.Debug((string.Format("{0} - Request: {1}\r\n{2}", correlationId, requestInfo, Encoding.UTF8.GetString(message))));
-            });
+                Log.Debug((string.Format("{0} - Request: {1}\r\n{2}", correlationId, requestInfo, Encoding.UTF8.GetString(message)))));
         }
 
 
         protected override async Task OutgoingMessageAsync(string correlationId, string requestInfo, byte[] message)
         {
             await Task.Run(() =>
-            {
-                Log.Debug((string.Format("{0} - Response: {1}\r\n{2}", correlationId, requestInfo, Encoding.UTF8.GetString(message))));
-
-            });
+                Log.Debug((string.Format("{0} - Response: {1}\r\n{2}", correlationId, requestInfo, Encoding.UTF8.GetString(message)))));
         }
     }
 }

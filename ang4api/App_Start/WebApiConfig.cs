@@ -11,25 +11,24 @@ namespace ang4api
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-            //  GlobalConfiguration.Configuration.MessageHandlers.Add(new MessageLoggingHandler());
+            config.MessageHandlers.Add(new MessageLoggingHandler());
             // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
                  name: "ActionApi",
                  routeTemplate: "api/{controller}/{action}/{id}",
-                 defaults: new { id = RouteParameter.Optional },
-                 constraints: null,
-                 handler: new MessageLoggingHandler()
+                 defaults: new
+                 {
+                     id = RouteParameter.Optional
+                 }
 
             );
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional },
-                constraints: null,
-                handler: new MessageLoggingHandler()
+                defaults: new { id = RouteParameter.Optional }
             );
         }
     }
