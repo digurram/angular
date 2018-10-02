@@ -16,7 +16,6 @@ namespace ang4api.api
 
         public HttpResponseMessage Get()
         {
-            Log.Debug("working ");
             return BAppMaster();
         }
 

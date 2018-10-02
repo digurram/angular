@@ -14,7 +14,6 @@ namespace ang4api.api
         [HttpGet]
         public HttpResponseMessage Get()
         {
-            Log.Debug("in ticket working ");
             var _lstticket = from t in TicketDB.Tickets
                              join um in TicketDB.UserMasters on t.CreatedBy equals um.UserId
                              join pm in TicketDB.PriorityMasters on t.PriorityId equals pm.PriorityId
