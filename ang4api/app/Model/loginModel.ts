@@ -1,5 +1,5 @@
-﻿export interface IloginModel {
-    Userid: string,
-    Password: string,
-    grant_type: string
+﻿export class LoginModel {
+    Userid: string = '';
+    Password: string = '';
+    grant_type: string = '';
 }

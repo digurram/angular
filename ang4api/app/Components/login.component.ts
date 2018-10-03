@@ -2,9 +2,10 @@
 import { UserService } from '../Service/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { IloginModel } from '../Model/loginModel';
+import { LoginModel } from '../Model/loginModel';
 import { MenuComponent } from './menu.component';
 import { MessageService } from '../Service/message.service';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
     templateUrl: 'app/Components/login.component.html'
@@ -12,23 +13,21 @@ import { MessageService } from '../Service/message.service';
 
 @Injectable()
 export class LoginComponent implements OnInit {
+    loginForm: FormGroup;
     routeCollection: any;
-    loginmodel: IloginModel;
+    loginmodel: LoginModel;
     msg: string;
-
-
     isLoginError: boolean = false;
-    constructor(private userService: UserService, private router: Router, public messageService: MessageService) {
+
+    constructor(private userService: UserService, private router: Router, public messageService: MessageService, private formBuilder: FormBuilder) {
+        this.loginForm = this.formBuilder.group(new LoginModel());
         this.logout();
     }
 
+
     ngOnInit() {
-      //  this.logout();
-        this.loginmodel = <IloginModel>{
-            Userid: "",
-            Password: "",
-            grant_type: ""
-        }
+
+
     }
 
     logout() {
@@ -46,7 +45,9 @@ export class LoginComponent implements OnInit {
     }
 
     authenticate() {
-        this.userService.userAuthentication(this.loginmodel.Userid, this.loginmodel.Password).subscribe(
+        const result: LoginModel = Object.assign({}, this.loginForm.value);
+        this.loginForm.reset();
+        this.userService.userAuthentication(result.Userid, result.Password).subscribe(
             (data: any) => {
                 localStorage.setItem('userToken', data.access_token);
                 this.loadMenus();
