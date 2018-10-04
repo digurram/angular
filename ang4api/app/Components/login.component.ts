@@ -51,6 +51,9 @@ export class LoginComponent implements OnInit {
     }
 
     authenticate() {
+        if (this.loginForm.status == 'INVALID') {
+            return;
+        }
         const result: LoginModel = Object.assign({}, this.loginForm.value);
         this.loginForm.reset();
         this.userService.userAuthentication(result.Userid, result.Password).subscribe(

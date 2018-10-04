@@ -8,7 +8,7 @@ import { MessageService } from '../Service/message.service';
 import { Router } from "@angular/router";
 @Component({
     selector: 'menu-items',
-    template: `<div *ngIf='userModel'>
+    template: `<div *ngIf='userModel| async'>
     <nav class='navbar navbar-inverse' >
         <div class='container-fluid' >
             <ul class='nav navbar-nav' >
