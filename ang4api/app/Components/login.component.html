@@ -1,16 +1,26 @@
 ﻿<div class="container">
-    <form [formGroup]="loginForm" (ngSubmit)="authenticate()" novalidate>
+    <form [formGroup]="loginForm" (ngSubmit)="authenticate()" >
         <div class="col s12 white">
             <div class="row  top-buffer">
                 <div class="col-md-3"> <label for="txtuserid">User Id:</label></div>
                 <div class="col-md-6">
-                    <input formControlName="Userid"  class="form-control">
+                    <input formControlName="Userid" class="form-control" >
+                    <div *ngIf="loginForm.controls['Userid'].touched && !loginForm.controls['Userid'].valid">
+                        <span *ngIf="loginForm.controls['Userid'].hasError('required') " class="alert-danger">
+                            User id is required
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="row  top-buffer">
                 <div class="col-md-3"><label for="txtpwd">Password:</label></div>
                 <div class="col-md-6">
-                    <input formControlName="Password" class="form-control">
+                    <input formControlName="Password" class="form-control" type="password">
+                    <div *ngIf="loginForm.controls['Password'].touched && !loginForm.controls['Password'].valid">
+                        <span *ngIf="loginForm.controls['Password'].hasError('required') " class="alert-danger">
+                           Password required
+                        </span>
+                    </div>                    
                 </div>
             </div>
             <div class="row  top-buffer">
@@ -19,5 +29,5 @@
                 </div><div class="col-md-6"></div>
             </div>
         </div>
-        </form>
+    </form>
 </div>

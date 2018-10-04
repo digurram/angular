@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { LoginModel } from '../Model/loginModel';
 import { MenuComponent } from './menu.component';
 import { MessageService } from '../Service/message.service';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
     templateUrl: 'app/Components/login.component.html'
@@ -20,14 +20,20 @@ export class LoginComponent implements OnInit {
     isLoginError: boolean = false;
 
     constructor(private userService: UserService, private router: Router, public messageService: MessageService, private formBuilder: FormBuilder) {
-        this.loginForm = this.formBuilder.group(new LoginModel());
-        this.logout();
+
     }
 
 
     ngOnInit() {
 
-
+        this.loginmodel = new LoginModel();
+        this.loginForm = this.formBuilder.group({
+            'Userid': new FormControl(this.loginmodel.Userid, [Validators.required, Validators.email]),
+            'Password': new FormControl(this.loginmodel.Password, {
+                validators: Validators.required
+            })
+        });
+        this.logout();
     }
 
     logout() {
