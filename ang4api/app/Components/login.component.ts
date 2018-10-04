@@ -58,12 +58,13 @@ export class LoginComponent implements OnInit {
         this.loginForm.reset();
         this.userService.userAuthentication(result.Userid, result.Password).subscribe(
             (data: any) => {
+                console.log(data);
                 localStorage.setItem('userToken', data.access_token);
                 this.loadMenus();
                 this.router.navigate(['/home']);
             },
-            error => {
-                this.msg = error;
+            err => {
+                this.msg = err.error.error_description;
             });
     }
 

@@ -9,7 +9,7 @@
                         <span *ngIf="loginForm.controls['Userid'].hasError('required') " class="alert-danger">
                             User id is required
                         </span>
-                        <span *ngIf="loginForm.controls['Userid'].hasError('email') " class="alert-danger">
+                        <span *ngIf="loginForm.controls['Userid'].hasError('email') && !loginForm.controls['Userid'].hasError('required')" class="alert-danger">
                             User id is not valid email
                         </span>
                     </div>
@@ -28,7 +28,10 @@
             </div>
             <div class="row  top-buffer">
                 <div class="col-md-6">
-                    <button type="submit" [disabled]="loginForm.pristine" class="btn btn-primary pull-right">Login</button>
+                    <button type="submit"  class="btn btn-primary pull-right">Login</button>
+                    <div  class="alert-danger">
+                        {{msg}}
+                    </div>
                 </div><div class="col-md-6"></div>
             </div>
         </div>
