@@ -14,6 +14,5 @@ export class NotAuthorizedComponent {
     constructor(private _router: Router, private location: Location) { }
     goBack() {
         this.location.back();
-        console.log('goBack()...');
     }
 }

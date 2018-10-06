@@ -1,8 +1,8 @@
 ﻿import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AdminService } from '../Service/admin.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { IkeyValuePair } from '../Model/keyValuePair';
-import { ITicket } from '../Model/ticketModel';
+import { Ticket } from '../Model/ticketModel';
 import { DBOperation } from '../Shared/enum';
 import { Observable } from 'rxjs/Rx';
 import { Global } from '../Shared/global';
@@ -26,20 +26,19 @@ export class TicketComponent implements OnInit {
     msg: string;
     ticketId: number = 0;
     sub: any;
-    ticket: ITicket;
+    ticket: Ticket;
     title: string;
-
-    constructor(private _adminservice: AdminService, private _route: ActivatedRoute, private _router: Router, private location: Location) { }
+    ticketForm: FormGroup;
+    constructor(private _adminservice: AdminService, private _route: ActivatedRoute, private _router: Router, private location: Location, private formBuilder: FormBuilder, private router: Router) { }
 
     ngOnInit(): void {
-
         this.Loadapplications();
         this.Loadusers();
         this.Loadmodules();
         this.Loadstatuses();
         this.Loadpriorities();
         this.Loadtypes();
-
+        this.ticketForm = this.formBuilder.group({});
         this.sub = this._route
             .queryParams
             .subscribe(params => {
@@ -57,6 +56,28 @@ export class TicketComponent implements OnInit {
         if (this.ticketId == 0) {
             this.LoadTickets();
         }
+
+        this.ticket = new Ticket();
+        this.ticket.TicketId = -1;
+        this.ticketForm = this.formBuilder.group({
+            'TicketId': new FormControl(this.ticket.TicketId),
+            'Title': new FormControl(this.ticket.Title, [Validators.required]),
+            'TDescription': new FormControl(this.ticket.TDescription, [Validators.required]),
+            'CreatedBy': new FormControl(this.ticket.CreatedBy, [Validators.required]),
+            'StatusId': new FormControl(this.ticket.StatusId, [Validators.required]),
+            'Createddate': new FormControl(this.ticket.Createddate, [Validators.required]),
+            'AssignedTo': new FormControl(this.ticket.AssignedTo, [Validators.required]),
+            'PriorityId': new FormControl(this.ticket.PriorityId, [Validators.required]),
+            'TypeId': new FormControl(this.ticket.TypeId, [Validators.required]),
+            'ApplicationId': new FormControl(this.ticket.ApplicationId, [Validators.required]),
+            'ModuleID': new FormControl(this.ticket.ModuleID, [Validators.required]),
+            'ResponseDeadline': new FormControl(this.ticket.ResponseDeadline, [Validators.required]),
+            'ResolutionDeadline': new FormControl(this.ticket.ResolutionDeadline, [Validators.required]),
+            'RootCauseId': new FormControl(this.ticket.RootCauseId, [Validators.required]),
+            'Coommnets': new FormControl(this.ticket.Coommnets, [Validators.required]),
+            'UpdatedBy': new FormControl(this.ticket.UpdatedBy),
+            'LastModifiedon': new FormControl(this.ticket.LastModifiedon)
+        });
     }
 
     //ngOnDestroy() {
@@ -66,9 +87,10 @@ export class TicketComponent implements OnInit {
 
     goBack() {
         this.ticketId = 0;
-        this.ticket = null;
-        this.location.back();
-        console.log('goBack()...');
+        this.ticket.TicketId = -1;
+        this.ticketForm.reset();
+
+        this.router.navigate(['/Ticket']);
     }
 
     LoadTickets(): void {
@@ -76,61 +98,68 @@ export class TicketComponent implements OnInit {
         this.title = "Ticket Summary";
         this._adminservice.get(Global.BASE_TICKET_ENDPOINT)
             .subscribe(tickets => { this.tickets = tickets; this.indLoading = false; },
-            error => this.msg = <any>error);
+                error => this.msg = <any>error);
     }
 
     Loadapplications(): void {
 
         this._adminservice.get(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_APPMASTER)
             .subscribe(applications => { this.applications = applications; },
-            error => this.msg = <any>error);
+                error => this.msg = <any>error);
     }
 
     Loadusers(): void {
 
         this._adminservice.get(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_USERMASTER)
             .subscribe(users => { this.users = users; },
-            error => this.msg = <any>error);
+                error => this.msg = <any>error);
     }
 
     Loadmodules(): void {
 
         this._adminservice.get(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_MODULEMASTER)
             .subscribe(modules => { this.modules = modules; },
-            error => this.msg = <any>error);
+                error => this.msg = <any>error);
     }
 
     Loadstatuses(): void {
 
         this._adminservice.get(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_STATUSMASTER)
             .subscribe(statuses => { this.statuses = statuses; },
-            error => this.msg = <any>error);
+                error => this.msg = <any>error);
     }
 
     Loadpriorities(): void {
 
         this._adminservice.get(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_PRIORITYMASTER)
             .subscribe(priorities => { this.priorities = priorities; },
-            error => this.msg = <any>error);
+                error => this.msg = <any>error);
     }
 
     Loadtypes(): void {
 
         this._adminservice.get(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_TYPEMASTER)
             .subscribe(types => { this.types = types; },
-            error => this.msg = <any>error);
+                error => this.msg = <any>error);
     }
 
     GetTicketById(id: number): void {
 
         this._adminservice.getById(Global.BASE_TICKET_ENDPOINT, id)
-            .subscribe(ticket => { this.ticket = ticket[0]; this.title = this.ticket.Title; },
+            .subscribe(ticket => {
+                this.ticket = ticket[0];
+                this.title = this.ticket.Title;
+                this.ticketForm.setValue(Object.assign({}, this.ticket));
+            },
             error => this.msg = <any>error);
     }
 
-
-    saveticket(id: number): void {
-        this._adminservice.put(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_UPDATE, this.ticket.TicketId, this.ticket).subscribe(
+    saveticket(): void {
+        if (this.ticketForm.status == 'INVALID') {
+            return;
+        }
+        const tktresult: Ticket = Object.assign({}, this.ticketForm.value);
+        this._adminservice.put(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_UPDATE, tktresult.TicketId, tktresult).subscribe(
             data => {
                 if (data == 1) //Success
                 {

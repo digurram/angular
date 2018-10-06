@@ -37,12 +37,10 @@ export class LoginComponent implements OnInit {
     }
 
     logout() {
-        console.log('first logout');
         this.userService.userlogout();
     }
 
     loadMenus(): void {
-        console.log('i am called menus')
         this.userService.getusermenu()
             .subscribe(routeCollection => {
                 this.messageService.setMessage(routeCollection);
@@ -58,7 +56,6 @@ export class LoginComponent implements OnInit {
         this.loginForm.reset();
         this.userService.userAuthentication(result.Userid, result.Password).subscribe(
             (data: any) => {
-                console.log(data);
                 localStorage.setItem('userToken', data.access_token);
                 this.loadMenus();
                 this.router.navigate(['/home']);
