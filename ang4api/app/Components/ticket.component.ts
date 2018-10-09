@@ -151,10 +151,14 @@ export class TicketComponent implements OnInit {
                 this.title = this.ticket.Title;
                 this.ticketForm.setValue(Object.assign({}, this.ticket));
             },
-            error => this.msg = <any>error);
+                error => this.msg = <any>error);
+
+        this.ticketForm.controls['TicketId'].disable();
     }
 
     saveticket(): void {
+        console.log(this.ticketForm);
+        console.log(this.ticketForm.status);
         if (this.ticketForm.status == 'INVALID') {
             return;
         }

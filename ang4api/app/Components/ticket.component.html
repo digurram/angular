@@ -65,12 +65,26 @@
                             </div>
                             <div class="col-md-2">
                                 <label for="txttitile">Title</label>
-                            </div><div class="col-md-4"><input type="text" id="txttitile" formControlName="Title" class="form-control"> </div>
+                            </div><div class="col-md-4">
+                                <input type="text" id="txttitile" formControlName="Title" class="form-control">
+                                <div *ngIf="ticketForm.controls['Title'].touched && !ticketForm.controls['Title'].valid">
+                                    <span *ngIf="ticketForm.controls['Title'].hasError('required') " class="alert-danger">
+                                        Title is required
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                         <div class="row top-buffer">
                             <div class="col-md-2">
                                 <label for="txtTDescription">Description</label>
-                            </div><div class="col-md-10"><textarea rows="4" formControlName="TDescription" id="txtTDescription" class="form-control" style="min-width: 100%"></textarea> </div>
+                            </div><div class="col-md-10">
+                                <textarea rows="4" formControlName="TDescription" id="txtTDescription" class="form-control" style="min-width: 100%"></textarea>
+                                <div *ngIf="ticketForm.controls['TDescription'].touched && !ticketForm.controls['TDescription'].valid">
+                                    <span *ngIf="ticketForm.controls['TDescription'].hasError('required') " class="alert-danger">
+                                        Ticket Description is required
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                         <div class="row top-buffer">
                             <div class="col-md-2">
@@ -92,7 +106,7 @@
                                 <label for="txtCreateddate">Created Date</label>
                             </div>
                             <div class="col-md-4">
-                                <input type="text" id="txtCreateddate" class="form-control" formControlName="Createddate" >
+                                <input type="text" id="txtCreateddate" class="form-control" formControlName="Createddate">
                             </div>
                             <div class="col-md-2"><label for="txtAssignedTo">Assigned to</label></div><div class="col-md-4">
                                 <select id="txtAssignedTo" class="form-control" formControlName="AssignedTo">
@@ -142,6 +156,12 @@
                             <div class="col-md-2"><label for="txtCoommnets">Comments</label></div>
                             <div class="col-md-10">
                                 <textarea rows="4" id="txtCoommnets" class="form-control" style="min-width: 100%" formControlName="Coommnets"></textarea>
+
+                                <div *ngIf="ticketForm.controls['Coommnets'].touched && !ticketForm.controls['Coommnets'].valid">
+                                    <span *ngIf="ticketForm.controls['Coommnets'].hasError('required') " class="alert-danger">
+                                        Coommnets required
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
