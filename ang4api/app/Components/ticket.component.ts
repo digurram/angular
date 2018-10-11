@@ -9,6 +9,8 @@ import { Global } from '../Shared/global';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { Location } from '@angular/common';
 import { DropdownComponent } from './dropdown.component';
+import { AlertComponent } from './alert.component';
+import { AlertService } from '../Service/alert.service';
 
 @Component({
     templateUrl: 'app/Components/ticket.component.html'
@@ -29,7 +31,7 @@ export class TicketComponent implements OnInit {
     ticket: Ticket;
     title: string;
     ticketForm: FormGroup;
-    constructor(private _adminservice: AdminService, private _route: ActivatedRoute, private _router: Router, private location: Location, private formBuilder: FormBuilder, private router: Router) { }
+    constructor(private _adminservice: AdminService, private _route: ActivatedRoute, private _router: Router, private location: Location, private formBuilder: FormBuilder, private router: Router, private alertService: AlertService) { }
 
     ngOnInit(): void {
         this.Loadapplications();
@@ -63,17 +65,17 @@ export class TicketComponent implements OnInit {
             'TicketId': new FormControl(this.ticket.TicketId),
             'Title': new FormControl(this.ticket.Title, [Validators.required]),
             'TDescription': new FormControl(this.ticket.TDescription, [Validators.required]),
-            'CreatedBy': new FormControl(this.ticket.CreatedBy, [Validators.required]),
-            'StatusId': new FormControl(this.ticket.StatusId, [Validators.required]),
+            'CreatedBy': new FormControl(this.ticket.CreatedBy, [Validators.required, Validators.min(1)]),
+            'StatusId': new FormControl(this.ticket.StatusId, [Validators.required, Validators.min(1)]),
             'Createddate': new FormControl(this.ticket.Createddate, [Validators.required]),
-            'AssignedTo': new FormControl(this.ticket.AssignedTo, [Validators.required]),
-            'PriorityId': new FormControl(this.ticket.PriorityId, [Validators.required]),
-            'TypeId': new FormControl(this.ticket.TypeId, [Validators.required]),
-            'ApplicationId': new FormControl(this.ticket.ApplicationId, [Validators.required]),
-            'ModuleID': new FormControl(this.ticket.ModuleID, [Validators.required]),
+            'AssignedTo': new FormControl(this.ticket.AssignedTo, [Validators.required, Validators.min(1)]),
+            'PriorityId': new FormControl(this.ticket.PriorityId, [Validators.required, Validators.min(1)]),
+            'TypeId': new FormControl(this.ticket.TypeId, [Validators.required, Validators.min(1)]),
+            'ApplicationId': new FormControl(this.ticket.ApplicationId, [Validators.required, Validators.min(1)]),
+            'ModuleID': new FormControl(this.ticket.ModuleID, [Validators.required, Validators.min(1)]),
             'ResponseDeadline': new FormControl(this.ticket.ResponseDeadline, [Validators.required]),
             'ResolutionDeadline': new FormControl(this.ticket.ResolutionDeadline, [Validators.required]),
-            'RootCauseId': new FormControl(this.ticket.RootCauseId, [Validators.required]),
+            'RootCauseId': new FormControl(this.ticket.RootCauseId, [Validators.required, Validators.min(1)]),
             'Coommnets': new FormControl(this.ticket.Coommnets, [Validators.required]),
             'UpdatedBy': new FormControl(this.ticket.UpdatedBy),
             'LastModifiedon': new FormControl(this.ticket.LastModifiedon)
@@ -86,11 +88,16 @@ export class TicketComponent implements OnInit {
 
 
     goBack() {
-        this.ticketId = 0;
-        this.ticket.TicketId = -1;
-        this.ticketForm.reset();
-
-        this.router.navigate(['/Ticket']);
+        console.log(this.ticketForm.touched);
+        this.alertService.confirmThis("Your changes will be lost, you want to continue?", function () {
+            //ACTION: Do this If user says YES
+            this.ticketId = 0;
+            this.ticket.TicketId = -1;
+            this.ticketForm.reset();
+            this.router.navigate(['/Ticket']);
+        }, function () {
+            return;
+        })
     }
 
     LoadTickets(): void {

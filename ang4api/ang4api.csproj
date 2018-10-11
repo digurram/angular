@@ -352,6 +352,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\Components\admin.component.html" />
+    <Content Include="app\Components\alert.component.html" />
     <Content Include="app\Components\login.component.html" />
     <Content Include="app\Components\ticket.component.html" />
     <Content Include="Content\bootstrap.css" />
@@ -440,6 +441,7 @@
     <TypeScriptCompile Include="app\auth\auth.guard.ts" />
     <TypeScriptCompile Include="app\auth\auth.interceptor.ts" />
     <TypeScriptCompile Include="app\Components\admin.component.ts" />
+    <TypeScriptCompile Include="app\Components\alert.component.ts" />
     <TypeScriptCompile Include="app\Components\dropdown.component.ts" />
     <TypeScriptCompile Include="app\Components\home.component.ts" />
     <TypeScriptCompile Include="app\Components\login.component.ts" />
@@ -454,6 +456,7 @@
     <TypeScriptCompile Include="app\Model\ticketModel.ts" />
     <TypeScriptCompile Include="app\Model\userModel.ts" />
     <TypeScriptCompile Include="app\Service\admin.service.ts" />
+    <TypeScriptCompile Include="app\Service\alert.service.ts" />
     <TypeScriptCompile Include="app\Service\message.service.ts" />
     <TypeScriptCompile Include="app\Service\user.service.ts" />
     <TypeScriptCompile Include="app\Shared\enum.ts" />
