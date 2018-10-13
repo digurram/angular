@@ -27,6 +27,8 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
 
         this.loginmodel = new LoginModel();
+        this.loginmodel.Userid = "naren.7090@gmail.com";
+        this.loginmodel.Password = "1234";
         this.loginForm = this.formBuilder.group({
             'Userid': new FormControl(this.loginmodel.Userid, [Validators.required, Validators.email]),
             'Password': new FormControl(this.loginmodel.Password, {
