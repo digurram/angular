@@ -31,9 +31,10 @@ export class TicketComponent implements OnInit {
     ticket: Ticket;
     title: string;
     ticketForm: FormGroup;
-    constructor(private _adminservice: AdminService, private _route: ActivatedRoute, private _router: Router, private location: Location, private formBuilder: FormBuilder, private router: Router, private alertService: AlertService) { }
+    constructor(private _adminservice: AdminService, private _route: ActivatedRoute, private location: Location, private formBuilder: FormBuilder, private router: Router, private alertService: AlertService) { }
 
     ngOnInit(): void {
+        this.ticketId = 0;
         this.Loadapplications();
         this.Loadusers();
         this.Loadmodules();
@@ -88,16 +89,16 @@ export class TicketComponent implements OnInit {
 
 
     goBack() {
-        console.log(this.ticketForm.touched);
-        this.alertService.confirmThis("Your changes will be lost, you want to continue?", function () {
-            //ACTION: Do this If user says YES
-            this.ticketId = 0;
-            this.ticket.TicketId = -1;
-            this.ticketForm.reset();
-            this.router.navigate(['/Ticket']);
-        }, function () {
-            return;
-        })
+        if (this.ticketForm.dirty) {
+            this.alertService.confirmThis("Your changes will be lost, you want to continue?", function () {
+                this.backtosummary();
+            }, function () {
+                return;
+            })
+        }
+        else {
+            this.backtosummary();
+        }
     }
 
     LoadTickets(): void {
@@ -163,18 +164,24 @@ export class TicketComponent implements OnInit {
         this.ticketForm.controls['TicketId'].disable();
     }
 
+
+    backtosummary(): void {
+        this.ticketId = 0;
+        this.ticket = new Ticket();
+        this.router.navigate(['/Ticket']);
+    }
     saveticket(): void {
         console.log(this.ticketForm);
         console.log(this.ticketForm.status);
         if (this.ticketForm.status == 'INVALID') {
             return;
         }
-        const tktresult: Ticket = Object.assign({}, this.ticketForm.value);
+        const tktresult: Ticket = Object.assign({}, this.ticketForm.getRawValue());
         this._adminservice.put(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_UPDATE, tktresult.TicketId, tktresult).subscribe(
             data => {
                 if (data == 1) //Success
                 {
-                    this.goBack();
+                    this.backtosummary();
                 }
                 else {
                     this.msg = "There is some issue in saving records, please contact to system administrator!"
