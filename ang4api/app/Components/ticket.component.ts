@@ -7,10 +7,11 @@ import { DBOperation } from '../Shared/enum';
 import { Observable } from 'rxjs/Rx';
 import { Global } from '../Shared/global';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, DatePipe } from '@angular/common';
 import { DropdownComponent } from './dropdown.component';
 import { AlertComponent } from './alert.component';
 import { AlertService } from '../Service/alert.service';
+import { concat } from 'rxjs/operator/concat';
 
 @Component({
     templateUrl: 'app/Components/ticket.component.html'
@@ -31,7 +32,7 @@ export class TicketComponent implements OnInit {
     ticket: Ticket;
     title: string;
     ticketForm: FormGroup;
-    constructor(private _adminservice: AdminService, private _route: ActivatedRoute, private location: Location, private formBuilder: FormBuilder, private router: Router, private alertService: AlertService) { }
+    constructor(private _adminservice: AdminService, private _route: ActivatedRoute, private location: Location, private formBuilder: FormBuilder, private router: Router, private alertService: AlertService, private datepipe: DatePipe) { }
 
     ngOnInit(): void {
         this.ticketId = 0;
@@ -80,6 +81,19 @@ export class TicketComponent implements OnInit {
             'Coommnets': new FormControl(this.ticket.Coommnets, [Validators.required]),
             'UpdatedBy': new FormControl(this.ticket.UpdatedBy),
             'LastModifiedon': new FormControl(this.ticket.LastModifiedon)
+        });
+
+        this.ticketForm.controls['Createddate'].valueChanges.subscribe(value => {
+            console.log(value);
+
+            this.ticketForm.controls['Createddate'].setValue(this.datepipe.transform(value, 'dd/MM/yyyy'),
+                {
+                    onlySelf: false,
+                    emitEvent: false,
+                    emitModelToViewChange: false,
+                    emitViewToModelChange: false
+                }  );
+
         });
     }
 

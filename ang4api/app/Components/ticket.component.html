@@ -10,6 +10,7 @@
                 <tr>
                     <th>Ticket Id</th>
                     <th>Title</th>
+                    <th>Type</th>
                     <th>Created date</th>
                     <th>status</th>
                     <th>Priority</th>
@@ -24,6 +25,7 @@
                         <a [routerLink]="['/Ticket']" [queryParams]="{ ticketId:tkt.TicketId  }">{{tkt.TicketId}}</a>
                     </td>
                     <td>{{tkt.Title}}</td>
+                    <td>{{tkt.tkttype}}</td>
                     <td>{{tkt.Createddate|date}}</td>
                     <td>{{tkt.status}}</td>
                     <td>{{tkt.PriorityDescription}}</td>
@@ -116,7 +118,7 @@
                                 <label for="txtCreateddate">Created Date</label>
                             </div>
                             <div class="col-md-4">
-                                <input type="text" id="txtCreateddate" class="form-control" formControlName="Createddate">
+                                <input type="text" id="txtCreateddate" class="form-control" bsDatepicker formControlName="Createddate">
                             </div>
                             <div class="col-md-2"><label for="txtAssignedTo">Assigned to</label></div><div class="col-md-4">
                                 <select id="txtAssignedTo" class="form-control" formControlName="AssignedTo">

@@ -20,7 +20,8 @@ namespace ang4api.api
                              join am in TicketDB.ApplicationMasters on t.ApplicationId equals am.ApplicationId
                              join um2 in TicketDB.UserMasters on t.AssignedTo equals um2.UserId
                              join st in TicketDB.StatusMasters on t.StatusId equals st.StatusId
-                             select new { t.TicketId, t.Title, t.Createddate, pm.PriorityDescription, createdby = um.LName + ", " + um.FName, am.ApplicationName, AssignedTo = um2.LName + ", " + um2.FName, status = st.StatusDescription };
+                             join tp in TicketDB.TypeMasters on t.TypeId equals tp.TypeId
+                             select new { t.TicketId, t.Title, t.Createddate, pm.PriorityDescription, createdby = um.LName + ", " + um.FName, am.ApplicationName, AssignedTo = um2.LName + ", " + um2.FName, status = st.StatusDescription,tkttype= tp.TypeDescription };
 
             return ToJson(_lstticket);
         }
