@@ -53,4 +53,15 @@ export class AdminService {
         return Observable.throw(error.json() || 'Server error');
     }
 
+    uploadFile(url: string, fileToUpload: File): Observable<any>  {
+        const _formData = new FormData();
+        _formData.append('file', fileToUpload, fileToUpload.name);
+        let body = _formData;
+        let headers = new HttpHeaders();
+        let options = { headers: headers };
+        return this._http.post(url, body, options); //note: no HttpHeaders passed as 3d param to POST!
+        //So no Content-Type constructed manually.
+        //Angular 4.x-6.x does it automatically.
+    }
+
 }

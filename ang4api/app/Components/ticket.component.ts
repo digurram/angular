@@ -206,4 +206,23 @@ export class TicketComponent implements OnInit {
             }
         );
     }
+
+    fileEvent($event: { target: { files: { [x: string]: File; }; }; }) {
+        const fileSelected: File = $event.target.files[0];
+        this._adminservice.uploadFile(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_UPLOAD, fileSelected).subscribe(
+            data => {
+                if (data == 1) //Success
+                {
+                    this.msg = "File Upload successfull"
+                }
+                else {
+                    this.msg = "There is some issue in saving records, please contact to system administrator!"
+                }
+            },
+            error => {
+                this.msg = error;
+            }
+        );
+    }
+
 }

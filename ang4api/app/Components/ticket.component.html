@@ -37,7 +37,7 @@
         </table>
     </div>
     <div *ngIf="ticket.TicketId>=0">
-        <form [formGroup]="ticketForm" (ngSubmit)="saveticket()">
+        <div [formGroup]="ticketForm" (ngSubmit)="saveticket()">
             <alert></alert>
             <div class="row">
                 <div class="col-md-9">
@@ -199,13 +199,15 @@
                     <div id="menu1" class="tab-pane fade">
                         <h3>attachements</h3>
                         <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-                            </div>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                            </div>
+                            <form name="form1" method="post" enctype="multipart/form-data" action="api/Ticketapi">
+                                <div class="container">
+                                    <label for="image1">Image File</label>
+                                    <input name="image1" type="file" class="form-control" (change)=fileEvent($event) />
+                                </div>
+                                <div>
+                                    <button title="Save" class="btn btn-primary"  >Upload</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div id="menu2" class="tab-pane fade">
@@ -214,6 +216,6 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>

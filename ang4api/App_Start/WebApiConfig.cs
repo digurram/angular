@@ -11,7 +11,7 @@ namespace ang4api
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-            config.MessageHandlers.Add(new MessageLoggingHandler());
+           // config.MessageHandlers.Add(new MessageLoggingHandler());
             // Web API routes
             config.MapHttpAttributeRoutes();
 

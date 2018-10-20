@@ -2,7 +2,13 @@
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
-
+using System.Diagnostics;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web;
+using System.IO;
+using System.Web.Hosting;
+using System;
 
 namespace ang4api.api
 {
@@ -98,31 +104,94 @@ namespace ang4api.api
         #endregion
 
         #region "file upload"
-        /*
-        [HttpPost]
-        public HttpResponseMessage Post()
+        
+        [HttpPost,Route("Uploadattachments")]
+        public async Task<HttpResponseMessage> PostFormDataAsync()
         {
-            HttpResponseMessage result = null;
-            var httpRequest = HttpContext.Current.Request;
-            if (httpRequest.Files.Count > 0)
+            #region "Commented code"
+            /*
+            // Check if the request contains multipart/form-data.
+            if (!Request.Content.IsMimeMultipartContent())
             {
-                var docfiles = new List<string>();
-                foreach (string file in httpRequest.Files)
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
+
+            string root = HttpContext.Current.Server.MapPath("~/App_Data");
+            var provider = new MultipartFormDataStreamProvider(root);
+
+            try
+            {
+                // Read the form data.
+                await Request.Content.ReadAsMultipartAsync(provider);
+
+                // This illustrates how to get the file names.
+                foreach (MultipartFileData file in provider.FileData)
                 {
-                    var postedFile = httpRequest.Files[file];
-                    var filePath = HttpContext.Current.Server.MapPath("~/" + postedFile.FileName);
-                    postedFile.SaveAs(filePath);
-                    docfiles.Add(filePath);
+                    Log.Debug(file.Headers.ContentDisposition.FileName);
+                    Log.Debug("Server file path: " + file.LocalFileName);
                 }
-                result = Request.CreateResponse(HttpStatusCode.Created, docfiles);
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
-            else
+            catch (System.Exception e)
             {
-                result = Request.CreateResponse(HttpStatusCode.BadRequest);
+                Log.Debug(e.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
             }
-            return ToJson(result);
+
+            */
+            #endregion
+            string diskFolderPath= HttpContext.Current.Server.MapPath("~/App_Data");
+            var path = Path.GetTempPath();
+
+            if (!Request.Content.IsMimeMultipartContent("form-data"))
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.UnsupportedMediaType));
+            }
+
+            MultipartFormDataStreamProvider streamProvider = new MultipartFormDataStreamProvider(path);
+
+            await Request.Content.ReadAsMultipartAsync(streamProvider);
+
+            foreach (MultipartFileData fileData in streamProvider.FileData)
+            {
+                string fileName = "";
+                if (string.IsNullOrEmpty(fileData.Headers.ContentDisposition.FileName))
+                {
+                    fileName = Guid.NewGuid().ToString();
+                }
+                fileName = fileData.Headers.ContentDisposition.FileName;
+                if (fileName.StartsWith("\"") && fileName.EndsWith("\""))
+                {
+                    fileName = fileName.Trim('"');
+                }
+                if (fileName.Contains(@"/") || fileName.Contains(@"\"))
+                {
+                    fileName = Path.GetFileName(fileName);
+                }
+
+                var newFileName = Path.Combine( diskFolderPath, fileName);
+                var fileInfo = new FileInfo(newFileName);
+                if (fileInfo.Exists)
+                {
+                    fileName = fileInfo.Name.Replace(fileInfo.Extension, "");
+                    fileName = fileName + (new Random().Next(0, 10000)) + fileInfo.Extension;
+
+                    newFileName = Path.Combine(HostingEnvironment.MapPath(diskFolderPath), fileName);
+                }
+
+                if (!Directory.Exists(fileInfo.Directory.FullName))
+                {
+                    Directory.CreateDirectory(fileInfo.Directory.FullName);
+                }
+
+
+                File.Move(fileData.LocalFileName, newFileName);
+
+                return ToJson(new { link = diskFolderPath + fileName });
+            }
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
-       */
+
         #endregion
     }
 }
