@@ -197,17 +197,42 @@
                         </div>
                     </div>
                     <div id="menu1" class="tab-pane fade">
-                        <h3>attachements</h3>
-                        <div class="input-group mb-3">
-                            <form name="form1" method="post" enctype="multipart/form-data" action="api/Ticketapi">
-                                <div class="container">
-                                    <label for="image1">Image File</label>
-                                    <input name="image1" type="file" class="form-control" (change)=fileEvent($event) />
+                        <div class="container">
+                            <h3>attachements</h3>
+                            <div *ngIf='attachments && attachments.length==0' class="alert alert-info" role="alert">No record found!</div>
+                            <div class='table-responsive'>
+                                <table class="table table-striped table-bordered" *ngIf='attachments && attachments.length'>
+                                    <thead>
+                                        <tr>
+                                            <th>File Id</th>
+                                            <th>File Name</th>
+                                            <th>File Type</th>
+                                            <th>Upload date</th>
+                                            <th>Download</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let tkt of attachments">
+
+                                            <td>{{tkt.Fileid}}</td>
+                                            <td>{{tkt.FileName}}</td>
+                                            <td>{{tkt.Filetype}}</td>
+                                            <td>{{tkt.UploadDate|date}}</td>
+                                            <td> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class='row'>
+                                <div class="col-md-9">
+                                    <label for="image1">  File</label>
+                                    <input id="fileupload" type="file" class="form-control" (change)=fileEvent($event) />
                                 </div>
-                                <div>
-                                    <button title="Save" class="btn btn-primary"  >Upload</button>
+                                <div class="col-md-3 top-buffer">
+                                    <button title="Save" class="btn btn-primary">Upload</button>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                     <div id="menu2" class="tab-pane fade">

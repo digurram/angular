@@ -49,6 +49,8 @@
         <EntityTypeShape EntityType="TicketTrackerModel.RoleMaster" Width="1.5" PointX="10.75" PointY="6.625" />
         <AssociationConnector Association="TicketTrackerModel.FK_MenuPermission_RoleMaster" />
         <AssociationConnector Association="TicketTrackerModel.FK_UserRoles_RoleMaster" />
+        <EntityTypeShape EntityType="TicketTrackerModel.FileUpload" Width="1.5" PointX="5.25" PointY="0.75" />
+        <AssociationConnector Association="TicketTrackerModel.FK_FileUpload_Tickets" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

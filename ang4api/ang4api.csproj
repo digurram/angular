@@ -224,6 +224,9 @@
     <Compile Include="DBContext\Exception.cs">
       <DependentUpon>TicketTrackerContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBContext\FileUpload.cs">
+      <DependentUpon>TicketTrackerContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBContext\FinancialEventSource.cs">
       <DependentUpon>TicketTrackerContext.tt</DependentUpon>
     </Compile>

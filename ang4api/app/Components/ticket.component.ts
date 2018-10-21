@@ -26,6 +26,7 @@ export class TicketComponent implements OnInit {
     priorities: IkeyValuePair[];
     types: IkeyValuePair[];
     tickets: any[];
+    attachments: any[];
     msg: string;
     ticketId: number = 0;
     sub: any;
@@ -50,9 +51,12 @@ export class TicketComponent implements OnInit {
                 this.ticketId = params.ticketId || 0;
                 if (this.ticketId > 0) {
                     this.GetTicketById(this.ticketId);
-
+                    console.log('in query params and ticket id : ' + this.ticketId);
                 }
                 else {
+                    this.ticketForm.reset;
+                    this.ticketId = 0;
+                    console.log('Loading all tickets');
                     this.LoadTickets();
                 }
             });
@@ -92,7 +96,7 @@ export class TicketComponent implements OnInit {
                     emitEvent: false,
                     emitModelToViewChange: false,
                     emitViewToModelChange: false
-                }  );
+                });
 
         });
     }
@@ -120,6 +124,13 @@ export class TicketComponent implements OnInit {
         this.title = "Ticket Summary";
         this._adminservice.get(Global.BASE_TICKET_ENDPOINT)
             .subscribe(tickets => { this.tickets = tickets; this.indLoading = false; },
+                error => this.msg = <any>error);
+    }
+
+    LoadAttachments(id: number): void {
+
+        this._adminservice.getById(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_ATTCHEMENTS, id)
+            .subscribe(attachments => { this.attachments = attachments; this.indLoading = false; },
                 error => this.msg = <any>error);
     }
 
@@ -166,7 +177,7 @@ export class TicketComponent implements OnInit {
     }
 
     GetTicketById(id: number): void {
-
+        this.ticketId = id;
         this._adminservice.getById(Global.BASE_TICKET_ENDPOINT, id)
             .subscribe(ticket => {
                 this.ticket = ticket[0];
@@ -176,6 +187,7 @@ export class TicketComponent implements OnInit {
                 error => this.msg = <any>error);
 
         this.ticketForm.controls['TicketId'].disable();
+        this.LoadAttachments(id);
     }
 
 
@@ -209,10 +221,13 @@ export class TicketComponent implements OnInit {
 
     fileEvent($event: { target: { files: { [x: string]: File; }; }; }) {
         const fileSelected: File = $event.target.files[0];
-        this._adminservice.uploadFile(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_UPLOAD, fileSelected).subscribe(
+        this._adminservice.uploadFile(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_UPLOAD + this.ticketId, fileSelected).subscribe(
             data => {
-                if (data == 1) //Success
+                if (data.Message == "1") //Success
                 {
+                    console.log(this.ticketId);
+                    this.LoadAttachments(this.ticketId);
+                    console.log(this.attachments)
                     this.msg = "File Upload successfull"
                 }
                 else {
@@ -223,6 +238,7 @@ export class TicketComponent implements OnInit {
                 this.msg = error;
             }
         );
+
     }
 
 }

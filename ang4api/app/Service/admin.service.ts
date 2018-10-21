@@ -53,7 +53,7 @@ export class AdminService {
         return Observable.throw(error.json() || 'Server error');
     }
 
-    uploadFile(url: string, fileToUpload: File): Observable<any>  {
+    uploadFile(url: string, fileToUpload: File ): Observable<any>  {
         const _formData = new FormData();
         _formData.append('file', fileToUpload, fileToUpload.name);
         let body = _formData;

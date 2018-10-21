@@ -43,6 +43,17 @@
           <Property Name="ControllerName" Type="nvarchar" MaxLength="50" />
           <Property Name="ActionName" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="FileUpload">
+          <Key>
+            <PropertyRef Name="Fileid" />
+          </Key>
+          <Property Name="Fileid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Filedata" Type="varbinary(max)" />
+          <Property Name="TicketId" Type="int" />
+          <Property Name="Filetype" Type="nvarchar" MaxLength="15" />
+          <Property Name="UploadDate" Type="datetime" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="150" />
+        </EntityType>
         <EntityType Name="FinancialEventSource">
           <Key>
             <PropertyRef Name="FinancialEventSourceId" />
@@ -315,6 +326,18 @@ warning 6002: The table/view 'TicketTracker.dbo.vw_user_permissions' does not ha
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_FileUpload_Tickets">
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="0..1" />
+          <End Role="FileUpload" Type="Self.FileUpload" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tickets">
+              <PropertyRef Name="TicketId" />
+            </Principal>
+            <Dependent Role="FileUpload">
+              <PropertyRef Name="TicketId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_FinancialEventSourceFlatFile_FinancialEventSource">
           <End Role="FinancialEventSource" Type="Self.FinancialEventSource" Multiplicity="0..1" />
           <End Role="FinancialEventSourceFlatFile" Type="Self.FinancialEventSourceFlatFile" Multiplicity="*" />
@@ -572,6 +595,7 @@ warning 6002: The table/view 'TicketTracker.dbo.vw_user_permissions' does not ha
           <EntitySet Name="Entity" EntityType="Self.Entity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Entity_Link" EntityType="Self.Entity_Link" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Exception" EntityType="Self.Exception" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FileUpload" EntityType="Self.FileUpload" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FinancialEventSource" EntityType="Self.FinancialEventSource" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FinancialEventSourceFlatFile" EntityType="Self.FinancialEventSourceFlatFile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FinancialEventSourceSwift" EntityType="Self.FinancialEventSourceSwift" Schema="dbo" store:Type="Tables" />
@@ -621,6 +645,10 @@ warning 6002: The table/view 'TicketTracker.dbo.vw_user_permissions' does not ha
           <AssociationSet Name="FK_Entity_Link_Entity1" Association="Self.FK_Entity_Link_Entity1">
             <End Role="Entity" EntitySet="Entity" />
             <End Role="Entity_Link" EntitySet="Entity_Link" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FileUpload_Tickets" Association="Self.FK_FileUpload_Tickets">
+            <End Role="Tickets" EntitySet="Tickets" />
+            <End Role="FileUpload" EntitySet="FileUpload" />
           </AssociationSet>
           <AssociationSet Name="FK_FinancialEventSourceFlatFile_FinancialEventSource" Association="Self.FK_FinancialEventSourceFlatFile_FinancialEventSource">
             <End Role="FinancialEventSource" EntitySet="FinancialEventSource" />
@@ -896,6 +924,7 @@ warning 6002: The table/view 'TicketTracker.dbo.vw_user_permissions' does not ha
           <NavigationProperty Name="RootCauseMaster" Relationship="Self.FK_Tickets_RootCauseMaster1" FromRole="Tickets" ToRole="RootCauseMaster" />
           <NavigationProperty Name="StatusMaster" Relationship="Self.FK_Tickets_StatusMaster" FromRole="Tickets" ToRole="StatusMaster" />
           <NavigationProperty Name="TypeMaster" Relationship="Self.FK_Tickets_TypeMaster" FromRole="Tickets" ToRole="TypeMaster" />
+          <NavigationProperty Name="FileUploads" Relationship="TicketTrackerModel.FK_FileUpload_Tickets" FromRole="Ticket" ToRole="FileUpload" />
         </EntityType>
         <EntityType Name="Trade">
           <Key>
@@ -1249,6 +1278,11 @@ warning 6002: The table/view 'TicketTracker.dbo.vw_user_permissions' does not ha
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="UserRole" EntitySet="UserRoles" />
           </AssociationSet>
+          <EntitySet Name="FileUploads" EntityType="TicketTrackerModel.FileUpload" />
+          <AssociationSet Name="FK_FileUpload_Tickets" Association="TicketTrackerModel.FK_FileUpload_Tickets">
+            <End Role="Ticket" EntitySet="Tickets" />
+            <End Role="FileUpload" EntitySet="FileUploads" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="Proc_Get_Open_Tickets_Result">
           <Property Type="Int32" Name="TicketId" Nullable="false" />
@@ -1451,6 +1485,30 @@ warning 6002: The table/view 'TicketTracker.dbo.vw_user_permissions' does not ha
             </Principal>
             <Dependent Role="UserRole">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FileUpload">
+          <Key>
+            <PropertyRef Name="Fileid" />
+          </Key>
+          <Property Name="Fileid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Filedata" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="TicketId" Type="Int32" />
+          <Property Name="Filetype" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="UploadDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Ticket" Relationship="TicketTrackerModel.FK_FileUpload_Tickets" FromRole="FileUpload" ToRole="Ticket" />
+          <Property Name="FileName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_FileUpload_Tickets">
+          <End Type="TicketTrackerModel.Ticket" Role="Ticket" Multiplicity="0..1" />
+          <End Type="TicketTrackerModel.FileUpload" Role="FileUpload" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ticket">
+              <PropertyRef Name="TicketId" />
+            </Principal>
+            <Dependent Role="FileUpload">
+              <PropertyRef Name="TicketId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1894,6 +1952,18 @@ warning 6002: The table/view 'TicketTracker.dbo.vw_user_permissions' does not ha
                 <ScalarProperty Name="link" ColumnName="link" />
                 <ScalarProperty Name="menuitemid" ColumnName="menuitemid" />
                 <ScalarProperty Name="displayname" ColumnName="displayname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FileUploads">
+            <EntityTypeMapping TypeName="TicketTrackerModel.FileUpload">
+              <MappingFragment StoreEntitySet="FileUpload">
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="UploadDate" ColumnName="UploadDate" />
+                <ScalarProperty Name="Filetype" ColumnName="Filetype" />
+                <ScalarProperty Name="TicketId" ColumnName="TicketId" />
+                <ScalarProperty Name="Filedata" ColumnName="Filedata" />
+                <ScalarProperty Name="Fileid" ColumnName="Fileid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

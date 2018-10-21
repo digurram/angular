@@ -2,13 +2,14 @@
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
-using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.IO;
 using System.Web.Hosting;
 using System;
+using System.Collections.Generic;
+
 
 namespace ang4api.api
 {
@@ -28,7 +29,7 @@ namespace ang4api.api
                              join um2 in TicketDB.UserMasters on t.AssignedTo equals um2.UserId
                              join st in TicketDB.StatusMasters on t.StatusId equals st.StatusId
                              join tp in TicketDB.TypeMasters on t.TypeId equals tp.TypeId
-                             select new { t.TicketId, t.Title, t.Createddate, pm.PriorityDescription, createdby = um.LName + ", " + um.FName, am.ApplicationName, AssignedTo = um2.LName + ", " + um2.FName, status = st.StatusDescription,tkttype= tp.TypeDescription };
+                             select new { t.TicketId, t.Title, t.Createddate, pm.PriorityDescription, createdby = um.LName + ", " + um.FName, am.ApplicationName, AssignedTo = um2.LName + ", " + um2.FName, status = st.StatusDescription, tkttype = tp.TypeDescription };
 
             return ToJson(_lstticket);
         }
@@ -104,9 +105,18 @@ namespace ang4api.api
         #endregion
 
         #region "file upload"
-        
-        [HttpPost,Route("Uploadattachments")]
-        public async Task<HttpResponseMessage> PostFormDataAsync()
+
+        [HttpGet, Route("Getattachments/{id}")]
+        public HttpResponseMessage GetTicketAttachemnets(int id)
+        {
+            var filelist = (TicketDB.FileUploads.Where(t => t.TicketId == id).Select(p => new { p.Fileid, p.FileName, p.Filetype, p.UploadDate })).ToList();
+            return ToJson(filelist);
+        }
+
+
+
+        [HttpPost, Route("Uploadattachments/{id}")]
+        public async Task<HttpResponseMessage> PostFormDataAsync(int id)
         {
             #region "Commented code"
             /*
@@ -140,7 +150,7 @@ namespace ang4api.api
 
             */
             #endregion
-            string diskFolderPath= HttpContext.Current.Server.MapPath("~/App_Data");
+            string diskFolderPath = HttpContext.Current.Server.MapPath("~/App_Data");
             var path = Path.GetTempPath();
 
             if (!Request.Content.IsMimeMultipartContent("form-data"))
@@ -149,49 +159,94 @@ namespace ang4api.api
             }
 
             MultipartFormDataStreamProvider streamProvider = new MultipartFormDataStreamProvider(path);
-
-            await Request.Content.ReadAsMultipartAsync(streamProvider);
-
-            foreach (MultipartFileData fileData in streamProvider.FileData)
+            try
             {
-                string fileName = "";
-                if (string.IsNullOrEmpty(fileData.Headers.ContentDisposition.FileName))
+                await Request.Content.ReadAsMultipartAsync(streamProvider);
+
+                foreach (MultipartFileData fileData in streamProvider.FileData)
                 {
-                    fileName = Guid.NewGuid().ToString();
+                    string fileName = "";
+                    if (string.IsNullOrEmpty(fileData.Headers.ContentDisposition.FileName))
+                    {
+                        fileName = Guid.NewGuid().ToString();
+                    }
+                    fileName = fileData.Headers.ContentDisposition.FileName;
+                    if (fileName.StartsWith("\"") && fileName.EndsWith("\""))
+                    {
+                        fileName = fileName.Trim('"');
+                    }
+                    if (fileName.Contains(@"/") || fileName.Contains(@"\"))
+                    {
+                        fileName = Path.GetFileName(fileName);
+                    }
+
+                    var newFileName = Path.Combine(diskFolderPath, fileName);
+                    var fileInfo = new FileInfo(newFileName);
+                    if (fileInfo.Exists)
+                    {
+                        fileName = fileInfo.Name.Replace(fileInfo.Extension, "");
+                        fileName = fileName + (new Random().Next(0, 10000)) + fileInfo.Extension;
+
+                        newFileName = Path.Combine(HostingEnvironment.MapPath(diskFolderPath), fileName);
+                    }
+
+                    if (!Directory.Exists(fileInfo.Directory.FullName))
+                    {
+                        Directory.CreateDirectory(fileInfo.Directory.FullName);
+                    }
+
+                    File.Move(fileData.LocalFileName, newFileName);
+
+                    await SaveToDB(newFileName,id);
+
                 }
-                fileName = fileData.Headers.ContentDisposition.FileName;
-                if (fileName.StartsWith("\"") && fileName.EndsWith("\""))
-                {
-                    fileName = fileName.Trim('"');
-                }
-                if (fileName.Contains(@"/") || fileName.Contains(@"\"))
-                {
-                    fileName = Path.GetFileName(fileName);
-                }
-
-                var newFileName = Path.Combine( diskFolderPath, fileName);
-                var fileInfo = new FileInfo(newFileName);
-                if (fileInfo.Exists)
-                {
-                    fileName = fileInfo.Name.Replace(fileInfo.Extension, "");
-                    fileName = fileName + (new Random().Next(0, 10000)) + fileInfo.Extension;
-
-                    newFileName = Path.Combine(HostingEnvironment.MapPath(diskFolderPath), fileName);
-                }
-
-                if (!Directory.Exists(fileInfo.Directory.FullName))
-                {
-                    Directory.CreateDirectory(fileInfo.Directory.FullName);
-                }
-
-
-                File.Move(fileData.LocalFileName, newFileName);
-
-                return ToJson(new { link = diskFolderPath + fileName });
+                return Request.CreateErrorResponse(HttpStatusCode.OK, "1");
             }
-            return Request.CreateResponse(HttpStatusCode.OK);
+            catch (System.Exception e)
+            {
+                Log.Debug(e.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
+            }
         }
 
-        #endregion
+
+        private async Task<int> SaveToDB(string filename,int ticketid)
+        {
+            try
+            {
+                FileInfo fileStream = new FileInfo(filename);
+
+                var fileupload = new FileUpload();
+
+                byte[] filecontent = new byte[fileStream.Length];
+                FileStream imagestream = fileStream.OpenRead();
+                imagestream.Read(filecontent, 0, filecontent.Length);
+                imagestream.Close();
+                fileupload.Filedata = filecontent;
+                fileupload.FileName = fileStream.Name;
+                fileupload.UploadDate = DateTime.Now;
+                fileupload.Filetype = fileStream.Name.Split('.')[1].ToString();
+                fileupload.TicketId = ticketid;
+                TicketDB.FileUploads.Add(fileupload);
+                TicketDB.SaveChanges();
+
+                if ((System.IO.File.Exists(filename)))
+                {
+                    System.IO.File.Delete(filename);
+                }
+
+                return 1;
+            }
+            catch (System.Exception e)
+            {
+                Log.Debug(e.Message);
+                return 0;
+            }
+        }
+
+
+
+
     }
+    #endregion
 }

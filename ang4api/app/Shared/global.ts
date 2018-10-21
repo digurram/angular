@@ -15,6 +15,8 @@
     public static BASE_TICKET_TYPEMASTER = "TypeMaster/";
     public static BASE_TICKET_UPDATE = "Updateticket/";
     public static BASE_TICKET_UPLOAD = "Uploadattachments/";
+   public static BASE_TICKET_ATTCHEMENTS = "Getattachments/";
+
     public static BASE_USER_MENU = "GetMenuitems";
     public static BASE_USER_LOGOUT = "Logout";
     

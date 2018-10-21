@@ -53,6 +53,7 @@ namespace ang4api.DBContext
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<MenuPermission> MenuPermissions { get; set; }
         public virtual DbSet<vw_user_permissions> vw_user_permissions { get; set; }
+        public virtual DbSet<FileUpload> FileUploads { get; set; }
     
         [DbFunction("TicketTrackerEntities", "ufn_CSVToTable")]
         public virtual IQueryable<ufn_CSVToTable_Result> ufn_CSVToTable(string stringInput)

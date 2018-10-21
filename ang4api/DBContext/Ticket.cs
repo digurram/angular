@@ -14,6 +14,12 @@ namespace ang4api.DBContext
     
     public partial class Ticket
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Ticket()
+        {
+            this.FileUploads = new HashSet<FileUpload>();
+        }
+    
         public int TicketId { get; set; }
         public string Title { get; set; }
         public string TDescription { get; set; }
@@ -39,5 +45,7 @@ namespace ang4api.DBContext
         public virtual RootCauseMaster RootCauseMaster { get; set; }
         public virtual StatusMaster StatusMaster { get; set; }
         public virtual TypeMaster TypeMaster { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FileUpload> FileUploads { get; set; }
     }
 }
