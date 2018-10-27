@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-
+//import 'rxjs/Rx';
 
 @Injectable()
 export class AdminService {
@@ -16,8 +16,8 @@ export class AdminService {
           //  .catch(this.handleError);
     }
 
-    getById(url: string, id: number): Observable<any> {
-        return this._http.get(url + id);
+    getById(url: string, id: number): Observable<any> {        
+        return this._http.get(url + id, { observe: 'response' });
         ///.map((response: Response) => <any>response.json())
          //   .catch(this.handleError);
     }
@@ -62,6 +62,15 @@ export class AdminService {
         return this._http.post(url, body, options); //note: no HttpHeaders passed as 3d param to POST!
         //So no Content-Type constructed manually.
         //Angular 4.x-6.x does it automatically.
+    }
+
+    postDownloadFile(url: string): Observable<any> {
+        let body = JSON.stringify('');
+        //let headers = ;
+       // let options = ;
+        return this._http.post(url, body, { responseType: 'blob', headers: new HttpHeaders().append('Content-Type', 'application/json') });
+        // .map((response: Response) => <any>response.json())
+        // .catch(this.handleError);
     }
 
 }

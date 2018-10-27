@@ -218,7 +218,7 @@
                                             <td>{{tkt.FileName}}</td>
                                             <td>{{tkt.Filetype}}</td>
                                             <td>{{tkt.UploadDate|date}}</td>
-                                            <td> </td>
+                                            <td>  <a (click)="downloadfile(tkt.Fileid)" href="#">Download</a> </td>
                                         </tr>
                                     </tbody>
                                 </table>

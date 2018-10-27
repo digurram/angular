@@ -11,7 +11,9 @@ import { Location, DatePipe } from '@angular/common';
 import { DropdownComponent } from './dropdown.component';
 import { AlertComponent } from './alert.component';
 import { AlertService } from '../Service/alert.service';
-import { concat } from 'rxjs/operator/concat';
+import { HttpHeaders } from '@angular/common/http';
+//import { concat } from 'rxjs/operator/concat';
+//import { saveAs } from 'file-saver';
 
 @Component({
     templateUrl: 'app/Components/ticket.component.html'
@@ -33,6 +35,7 @@ export class TicketComponent implements OnInit {
     ticket: Ticket;
     title: string;
     ticketForm: FormGroup;
+    fileblob: any;
     constructor(private _adminservice: AdminService, private _route: ActivatedRoute, private location: Location, private formBuilder: FormBuilder, private router: Router, private alertService: AlertService, private datepipe: DatePipe) { }
 
     ngOnInit(): void {
@@ -130,7 +133,7 @@ export class TicketComponent implements OnInit {
     LoadAttachments(id: number): void {
 
         this._adminservice.getById(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_ATTCHEMENTS, id)
-            .subscribe(attachments => { this.attachments = attachments; this.indLoading = false; },
+            .subscribe(attachments => { this.attachments = attachments.body; this.indLoading = false; },
                 error => this.msg = <any>error);
     }
 
@@ -180,7 +183,7 @@ export class TicketComponent implements OnInit {
         this.ticketId = id;
         this._adminservice.getById(Global.BASE_TICKET_ENDPOINT, id)
             .subscribe(ticket => {
-                this.ticket = ticket[0];
+                this.ticket = ticket.body[0];
                 this.title = this.ticket.Title;
                 this.ticketForm.setValue(Object.assign({}, this.ticket));
             },
@@ -239,6 +242,31 @@ export class TicketComponent implements OnInit {
             }
         );
 
+    }
+
+    downloadfile(id: number): void {
+        this._adminservice.getById(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_FILE, id)
+            .subscribe(response => {
+                if (response) {
+                    var condisposition = response.headers.get('Content-Disposition');
+                    console.log(response.headers.get('Content-Type'));
+                    var contentType = response.headers.get('Content-Type');
+                    var filename = response.headers.get('x-FileName');
+                    this.downLoadResponse(response.body, contentType);
+                    //var blob = new Blob([response.body], { type: contentType });
+                   // saveAs(blob, filename);
+                }
+            },
+                error => this.msg = <any>error);
+    }
+
+    downLoadResponse(data: any, type: string) {
+        var blob = new Blob([data], { type: type });
+        var url = window.URL.createObjectURL(blob);
+        var pwa = window.open(url);
+        if (!pwa || pwa.closed || typeof pwa.closed == 'undefined') {
+            alert('Please disable your Pop-up blocker and try again.');
+        }
     }
 
 }
