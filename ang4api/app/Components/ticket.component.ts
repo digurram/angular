@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { AdminService } from '../Service/admin.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { IkeyValuePair } from '../Model/keyValuePair';
@@ -20,6 +20,8 @@ import { HttpHeaders } from '@angular/common/http';
 })
 
 export class TicketComponent implements OnInit {
+
+    @ViewChild('downloadZipLink') private downloadZipLink: ElementRef;
     indLoading: boolean = false;
     applications: IkeyValuePair[];
     users: IkeyValuePair[];
@@ -245,24 +247,32 @@ export class TicketComponent implements OnInit {
     }
 
     downloadfile(id: number): void {
-        this._adminservice.getById(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_FILE, id)
+        this._adminservice.get(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_FILE+ id)
             .subscribe(response => {
-                if (response) {
-                    var condisposition = response.headers.get('Content-Disposition');
-                    console.log(response.headers.get('Content-Type'));
-                    var contentType = response.headers.get('Content-Type');
-                    var filename = response.headers.get('x-FileName');
-                    this.downLoadResponse(response.body, contentType);
-                    //var blob = new Blob([response.body], { type: contentType });
-                   // saveAs(blob, filename);
-                }
+                //if (response) {
+                //    var condisposition = response.headers.get('Content-Disposition');
+                //    console.log(response.headers.get('Content-Type'));
+                //    var contentType = response.headers.get('Content-Type');
+                //    var filename = response.headers.get('x-FileName');
+                //    this.downLoadResponse(response.body, contentType, filename);
+                //    //var blob = new Blob([response.body], { type: contentType });
+                //   // saveAs(blob, filename);
+                //}
             },
                 error => this.msg = <any>error);
     }
 
-    downLoadResponse(data: any, type: string) {
+    downLoadResponse(data: any, type: string,filename:string) {
         var blob = new Blob([data], { type: type });
-        var url = window.URL.createObjectURL(blob);
+        const url = window.URL.createObjectURL(blob);
+
+        const link = this.downloadZipLink.nativeElement;
+        link.href = url;
+        link.download = filename;
+        link.click();
+
+        window.URL.revokeObjectURL(url)
+    
         var pwa = window.open(url);
         if (!pwa || pwa.closed || typeof pwa.closed == 'undefined') {
             alert('Please disable your Pop-up blocker and try again.');

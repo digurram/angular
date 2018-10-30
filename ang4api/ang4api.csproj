@@ -203,6 +203,7 @@
   <ItemGroup>
     <Compile Include="api\AdminapiController.cs" />
     <Compile Include="api\BaseAPIController.cs" />
+    <Compile Include="api\downloadResult.cs" />
     <Compile Include="api\TicketapiController.cs" />
     <Compile Include="api\UserapiController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -509,7 +510,9 @@
     <PreBuildEvent>cd $(TargetDir)..\app
 
 del /S /Q *.js
-del /S /Q *.map</PreBuildEvent>
+del /S /Q *.map
+
+</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

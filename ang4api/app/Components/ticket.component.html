@@ -93,11 +93,11 @@
                             <div class="col-md-2">
                                 <label for="txtCreatedBy">Created By</label>
                             </div><div class="col-md-4">
-                                <!--<dropdown [selecId]="CreatedBy" [drpcollection]="users"  [ctrname]="CreatedBy"  [parentForm]="ticketForm"></dropdown>-->
-                                <select id="txtStatusId" class="form-control" formControlName="CreatedBy">
+                                <dropdown [selecId]="ticketForm.controls['CreatedBy'].value" [drpcollection]="users"    formControlName="CreatedBy"  ></dropdown>
+                                <!--<select id="txtStatusId" class="form-control" formControlName="CreatedBy">
                                     <option value=-1>Select</option>
                                     <option *ngFor="let st of users" [value]="st.Id" [selected]="st.Id == ticketForm.controls['CreatedBy'].value">{{st.keyValue}}</option>
-                                </select>
+                                </select>-->
                                 <span *ngIf="ticketForm.controls['CreatedBy'].hasError('min')" class="alert-danger">
                                     Please select Created By
                                 </span>
@@ -216,13 +216,14 @@
 
                                             <td>{{tkt.Fileid}}</td>
                                             <td>{{tkt.FileName}}</td>
-                                            <td>{{tkt.Filetype}}</td>
+                                            <td>{{tkt.Filetype}}  <a (click)="downloadfile(tkt.Fileid)" href="#">Download</a> </td>
                                             <td>{{tkt.UploadDate|date}}</td>
-                                            <td>  <a (click)="downloadfile(tkt.Fileid)" href="#">Download</a> </td>
+                                            <td>  <a href="./api/ticketapi/GetfileAttachemnet/{{tkt.Fileid}}">Download</a> </td>
                                         </tr>
                                     </tbody>
                                 </table>
 
+                                <a class="download-zip-link" #downloadZipLink></a>
                             </div>
                             <div class='row'>
                                 <div class="col-md-9">

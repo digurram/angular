@@ -38,3 +38,7 @@ textarea {
 .nav-tabs {
     margin-bottom: 0;
 }
+.download-zip-link
+{
+    display:none;
+}

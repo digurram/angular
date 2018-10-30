@@ -18,7 +18,7 @@ export class AdminService {
 
     getById(url: string, id: number): Observable<any> {        
         return this._http.get(url + id, { observe: 'response' });
-        ///.map((response: Response) => <any>response.json())
+        //.map((response: Response) => <any>response.json())
          //   .catch(this.handleError);
     }
 
