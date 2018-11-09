@@ -94,10 +94,7 @@
                                 <label for="txtCreatedBy">Created By</label>
                             </div><div class="col-md-4">
                                 <dropdown [drpcollection]="users" formControlName="CreatedBy"></dropdown>
-                                <!--<select id="txtStatusId" class="form-control" formControlName="CreatedBy">
-                                    <option value=-1>Select</option>
-                                    <option *ngFor="let st of users" [value]="st.Id" [selected]="st.Id == ticketForm.controls['CreatedBy'].value">{{st.keyValue}}</option>
-                                </select>-->
+
                                 <span *ngIf="ticketForm.controls['CreatedBy'].hasError('min')" class="alert-danger">
                                     Please select Created By
                                 </span>
@@ -105,10 +102,7 @@
                             <div class="col-md-2"><label for="txtStatusId">Status</label></div>
                             <div class="col-md-4">
                                 <dropdown [drpcollection]="statuses" formControlName="StatusId"></dropdown>
-                                <!--<select id="txtStatusId" class="form-control" formControlName="">
-                                    <option value=-1>Select</option>
-                                    <option *ngFor="let st of statuses" [value]="st.Id" [selected]="st.Id == ticketForm.controls['StatusId'].value">{{st.keyValue}}</option>
-                                </select>-->
+
                                 <span *ngIf="ticketForm.controls['StatusId'].hasError('min')" class="alert-danger">
                                     Please select Status
                                 </span>
@@ -119,14 +113,11 @@
                                 <label for="txtCreateddate">Created Date</label>
                             </div>
                             <div class="col-md-4">
-                                <input type="text" id="txtCreateddate" class="form-control" bsDatepicker formControlName="Createddate">
+                                <input type="text" id="txtCreateddate" class="form-control" formControlName="Createddate">
                             </div>
                             <div class="col-md-2"><label for="txtAssignedTo">Assigned to</label></div><div class="col-md-4">
                                 <dropdown [drpcollection]="users" formControlName="AssignedTo"></dropdown>
-                                <!--<select id="txtAssignedTo" class="form-control" formControlName="AssignedTo">
-                                    <option value=-1>Select</option>
-                                    <option *ngFor="let us of users" [value]="us.Id" [selected]="us.Id == ticketForm.controls['AssignedTo'].value">{{us.keyValue}}</option>
-                                </select>-->
+
                                 <span *ngIf="ticketForm.controls['AssignedTo'].hasError('min')" class="alert-danger">
                                     Please select Assigned to
                                 </span>
@@ -138,10 +129,7 @@
                             </div>
                             <div class="col-md-4">
                                 <dropdown [drpcollection]="priorities" formControlName="PriorityId"></dropdown>
-                                <!--<select id="txtPriorityId" class="form-control" formControlName="PriorityId">
-                                    <option value=-1>Select</option>
-                                    <option *ngFor="let pt of priorities" [value]="pt.Id" [selected]="pt.Id == ticketForm.controls['PriorityId'].value">{{pt.keyValue}}</option>
-                                </select>-->
+
                                 <span *ngIf="ticketForm.controls['PriorityId'].hasError('min')" class="alert-danger">
                                     Please select Priority
                                 </span>
@@ -151,10 +139,7 @@
                             </div>
                             <div class="col-md-4">
                                 <dropdown [drpcollection]="types" formControlName="TypeId"></dropdown>
-                                <!--<select id="txtTypeId" class="form-control" formControlName="TypeId">
-                                    <option value=-1>Select</option>
-                                    <option *ngFor="let tp of types" [value]="tp.Id" [selected]="tp.Id == ticketForm.controls['TypeId'].value">{{tp.keyValue}}</option>
-                                </select>-->
+
                                 <span *ngIf="ticketForm.controls['TypeId'].hasError('min')" class="alert-danger">
                                     Please select Type
                                 </span>
@@ -166,10 +151,7 @@
                             </div>
                             <div class="col-md-4">
                                 <dropdown [drpcollection]="applications" formControlName="ApplicationId"></dropdown>
-                                <!--<select id="txtApplicationId" class="form-control" formControlName="ApplicationId">
-                                    <option value=-1>Select</option>
-                                    <option *ngFor="let app of applications" [value]="app.Id" [selected]="app.Id ==ticketForm.controls['ApplicationId'].value">{{app.keyValue}}</option>
-                                </select>-->
+
                                 <span *ngIf="ticketForm.controls['ApplicationId'].hasError('min')" class="alert-danger">
                                     Please select Application
                                 </span>
@@ -179,15 +161,36 @@
                             </div>
                             <div class="col-md-4">
                                 <dropdown [drpcollection]="modules" formControlName="ModuleID"></dropdown>
-                                <!--<select id="txtModuleID" class="form-control" formControlName="ModuleID">
-                                    <option value=-1>Select</option>
-                                    <option *ngFor="let md of modules" [value]="md.Id" [selected]="md.Id == ticketForm.controls['ModuleID'].value">{{md.keyValue}}</option>
-                                </select>-->
+
+
                                 <span *ngIf="ticketForm.controls['ModuleID'].hasError('min')" class="alert-danger">
                                     Please select Module
                                 </span>
                             </div>
                         </div>
+
+                        <div class="row top-buffer">
+                            <div class="col-md-2">
+                                <label for="txtApplicationId">Root Cause</label>
+                            </div>
+                            <div class="col-md-4">
+                                <dropdown [drpcollection]="rootcauses" formControlName="RootCauseId"></dropdown>
+
+                                <span *ngIf="ticketForm.controls['RootCauseId'].hasError('min')" class="alert-danger">
+                                    Please select Root Cause
+                                </span>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="txtModuleID">Resolution Deadline</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" id="txtResolutionDeadline" class="form-control" formControlName="ResolutionDeadline">
+                                <span *ngIf="ticketForm.controls['ResolutionDeadline'].hasError('required')" class="alert-danger">
+                                    Please Enter Resolution Deadline
+                                </span>
+                            </div>
+                        </div>
+
                         <div class="row top-buffer">
                             <div class="col-md-2"><label for="txtCoommnets">Comments</label></div>
                             <div class="col-md-10">

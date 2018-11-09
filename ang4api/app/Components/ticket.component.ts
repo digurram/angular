@@ -28,6 +28,7 @@ export class TicketComponent implements OnInit {
     modules: IkeyValuePair[];
     statuses: IkeyValuePair[];
     priorities: IkeyValuePair[];
+    rootcauses: IkeyValuePair[];
     types: IkeyValuePair[];
     tickets: any[];
     attachments: any[];
@@ -47,6 +48,7 @@ export class TicketComponent implements OnInit {
         this.Loadmodules();
         this.Loadstatuses();
         this.Loadpriorities();
+        this.Loadrootcauses();
         this.Loadtypes();
         this.ticketForm = this.formBuilder.group({});
         this.sub = this._route
@@ -102,7 +104,15 @@ export class TicketComponent implements OnInit {
                     emitModelToViewChange: false,
                     emitViewToModelChange: false
                 });
-
+        });
+        this.ticketForm.controls['ResolutionDeadline'].valueChanges.subscribe(value => {
+            this.ticketForm.controls['ResolutionDeadline'].setValue(this.datepipe.transform(value, 'dd/MM/yyyy'),
+                {
+                    onlySelf: false,
+                    emitEvent: false,
+                    emitModelToViewChange: false,
+                    emitViewToModelChange: false
+                });
         });
     }
 
@@ -171,6 +181,13 @@ export class TicketComponent implements OnInit {
 
         this._adminservice.get(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_PRIORITYMASTER)
             .subscribe(priorities => { this.priorities = priorities; },
+                error => this.msg = <any>error);
+    }
+
+    Loadrootcauses(): void {
+
+        this._adminservice.get(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_RCMASTER)
+            .subscribe(rootcauses => { this.rootcauses = rootcauses; },
                 error => this.msg = <any>error);
     }
 
@@ -247,7 +264,7 @@ export class TicketComponent implements OnInit {
     }
 
     downloadfile(id: number): void {
-        this._adminservice.get(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_FILE+ id)
+        this._adminservice.get(Global.BASE_TICKET_ENDPOINT + Global.BASE_TICKET_FILE + id)
             .subscribe(response => {
                 //if (response) {
                 //    var condisposition = response.headers.get('Content-Disposition');
@@ -262,7 +279,7 @@ export class TicketComponent implements OnInit {
                 error => this.msg = <any>error);
     }
 
-    downLoadResponse(data: any, type: string,filename:string) {
+    downLoadResponse(data: any, type: string, filename: string) {
         var blob = new Blob([data], { type: type });
         const url = window.URL.createObjectURL(blob);
 
@@ -272,7 +289,7 @@ export class TicketComponent implements OnInit {
         link.click();
 
         window.URL.revokeObjectURL(url)
-    
+
         var pwa = window.open(url);
         if (!pwa || pwa.closed || typeof pwa.closed == 'undefined') {
             alert('Please disable your Pop-up blocker and try again.');

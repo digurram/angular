@@ -76,6 +76,13 @@ namespace ang4api.api
         }
 
         [HttpGet]
+        [Route("RootcauseMaster")]
+        public HttpResponseMessage RootcauseMaster()
+        {
+            return BRootCauseMaster();
+        }
+
+        [HttpGet]
         [Route("ModuleMaster")]
         public HttpResponseMessage ModuleMaster()
         {

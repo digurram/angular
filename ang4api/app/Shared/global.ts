@@ -10,6 +10,7 @@
     public static BASE_TICKET_USERMASTER = "UserMaster/";
     public static BASE_TICKET_STATUSMASTER = "StatusMaster/";
     public static BASE_TICKET_PRIORITYMASTER = "PriorityMaster/";
+    public static BASE_TICKET_RCMASTER = "RootcauseMaster/";
     public static BASE_TICKET_MODULEMASTER = "ModuleMaster/";
     public static BASE_TICKET_APPMASTER = "AppMaster/";
     public static BASE_TICKET_TYPEMASTER = "TypeMaster/";

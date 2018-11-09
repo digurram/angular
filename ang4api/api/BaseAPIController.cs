@@ -66,6 +66,11 @@ namespace ang4api.api
             return ToJson(TicketDB.TypeMasters.Select(p => new keyvalueModel { Id = p.TypeId, keyValue = p.TypeDescription, IsDeleted = p.IsDeleted }).AsEnumerable());
         }
 
+        protected HttpResponseMessage BRootCauseMaster()
+        {
+            return ToJson(TicketDB.RootCauseMasters.Select(p => new keyvalueModel { Id = p.RootCauseId, keyValue = p.Description, IsDeleted = p.Isdelete }).AsEnumerable());
+        }
+
         protected  string GetClaimValue(string name)
         {
             ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;
