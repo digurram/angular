@@ -12,6 +12,7 @@ import { DropdownComponent } from './dropdown.component';
 import { AlertComponent } from './alert.component';
 import { AlertService } from '../Service/alert.service';
 import { HttpHeaders } from '@angular/common/http';
+import { removeSpaces } from '../Validators/removeSpaces.validator';
 //import { concat } from 'rxjs/operator/concat';
 //import { saveAs } from 'file-saver';
 
@@ -76,9 +77,9 @@ export class TicketComponent implements OnInit {
         this.ticket.TicketId = -1;
         this.ticketForm = this.formBuilder.group({
             'TicketId': new FormControl(this.ticket.TicketId),
-            'Title': new FormControl(this.ticket.Title, [Validators.required]),
-            'TDescription': new FormControl(this.ticket.TDescription, [Validators.required]),
-            'CreatedBy': new FormControl(this.ticket.CreatedBy, [Validators.required, Validators.min(1)]),
+            'Title': new FormControl(this.ticket.Title, [removeSpaces, Validators.required]),
+            'TDescription': new FormControl(this.ticket.TDescription, [removeSpaces, Validators.required]),
+            'CreatedBy': new FormControl(this.ticket.CreatedBy, [Validators.required]),
             'StatusId': new FormControl(this.ticket.StatusId, [Validators.required, Validators.min(1)]),
             'Createddate': new FormControl(this.ticket.Createddate, [Validators.required]),
             'AssignedTo': new FormControl(this.ticket.AssignedTo, [Validators.required, Validators.min(1)]),
@@ -89,14 +90,13 @@ export class TicketComponent implements OnInit {
             'ResponseDeadline': new FormControl(this.ticket.ResponseDeadline, [Validators.required]),
             'ResolutionDeadline': new FormControl(this.ticket.ResolutionDeadline, [Validators.required]),
             'RootCauseId': new FormControl(this.ticket.RootCauseId, [Validators.required, Validators.min(1)]),
-            'Coommnets': new FormControl(this.ticket.Coommnets, [Validators.required]),
+            'Coommnets': new FormControl(this.ticket.Coommnets, [removeSpaces, Validators.required]),
             'UpdatedBy': new FormControl(this.ticket.UpdatedBy),
             'LastModifiedon': new FormControl(this.ticket.LastModifiedon)
         });
 
         this.ticketForm.controls['Createddate'].valueChanges.subscribe(value => {
             console.log(value);
-
             this.ticketForm.controls['Createddate'].setValue(this.datepipe.transform(value, 'dd/MM/yyyy'),
                 {
                     onlySelf: false,

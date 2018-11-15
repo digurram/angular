@@ -465,6 +465,8 @@
     <TypeScriptCompile Include="app\Service\user.service.ts" />
     <TypeScriptCompile Include="app\Shared\enum.ts" />
     <TypeScriptCompile Include="app\Shared\global.ts" />
+    <TypeScriptCompile Include="app\Validators\removeSpaces.validator.ts" />
+    <TypeScriptCompile Include="app\Validators\ticket-closedate-val.directive.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

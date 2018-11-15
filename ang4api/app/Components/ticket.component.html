@@ -61,14 +61,14 @@
                     <div id="home" class="tab-pane fade in active">
                         <div class="row top-buffer">
                             <div class="col-md-2">
-                                <label for="txtticketid">Ticket Id</label>
+                                <label class="control-label " for="txtticketid">Ticket Id</label>
                             </div>
                             <div class="col-md-4">
                                 <input type="text" id="txtticketid" formControlName="TicketId" class="form-control">
                             </div>
-                            <div class="col-md-2">
-                                <label for="txttitile">Title</label>
-                            </div><div class="col-md-4">
+                            <div class="col-md-2" [class.has-error]="ticketForm.controls['Title'].hasError('required')">
+                                <label class="control-label " for="txttitile">Title</label>
+                            </div><div class="col-md-4" [class.has-error]="ticketForm.controls['Title'].hasError('required')">
                                 <input type="text" id="txttitile" formControlName="Title" class="form-control">
                                 <div *ngIf="ticketForm.controls['Title'].touched && !ticketForm.controls['Title'].valid">
                                     <span *ngIf="ticketForm.controls['Title'].hasError('required') " class="alert-danger">
@@ -78,9 +78,9 @@
                             </div>
                         </div>
                         <div class="row top-buffer">
-                            <div class="col-md-2">
-                                <label for="txtTDescription">Description</label>
-                            </div><div class="col-md-10">
+                            <div class="col-md-2" [class.has-error]="ticketForm.controls['TDescription'].hasError('required')">
+                                <label class="control-label " for="txtTDescription">Description</label>
+                            </div><div class="col-md-10" [class.has-error]="ticketForm.controls['TDescription'].hasError('required')">
                                 <textarea rows="4" formControlName="TDescription" id="txtTDescription" class="form-control" style="min-width: 100%"></textarea>
                                 <div *ngIf="ticketForm.controls['TDescription'].touched && !ticketForm.controls['TDescription'].valid">
                                     <span *ngIf="ticketForm.controls['TDescription'].hasError('required') " class="alert-danger">
@@ -90,17 +90,19 @@
                             </div>
                         </div>
                         <div class="row top-buffer">
-                            <div class="col-md-2">
-                                <label for="txtCreatedBy">Created By</label>
-                            </div><div class="col-md-4">
+                            <div class="col-md-2" [class.has-error]="ticketForm.controls['CreatedBy'].hasError('min')">
+                                <label class="control-label " for="txtCreatedBy">Created By</label>
+                            </div><div class="col-md-4" [class.has-error]="ticketForm.controls['CreatedBy'].hasError('min')">
                                 <dropdown [drpcollection]="users" formControlName="CreatedBy"></dropdown>
 
                                 <span *ngIf="ticketForm.controls['CreatedBy'].hasError('min')" class="alert-danger">
                                     Please select Created By
                                 </span>
                             </div>
-                            <div class="col-md-2"><label for="txtStatusId">Status</label></div>
-                            <div class="col-md-4">
+                            <div class="col-md-2" [class.has-error]="ticketForm.controls['StatusId'].hasError('min')">
+                                <label class="control-label " for="txtStatusId">Status</label>
+                            </div>
+                            <div class="col-md-4" [class.has-error]="ticketForm.controls['StatusId'].hasError('min')">
                                 <dropdown [drpcollection]="statuses" formControlName="StatusId"></dropdown>
 
                                 <span *ngIf="ticketForm.controls['StatusId'].hasError('min')" class="alert-danger">
@@ -110,12 +112,12 @@
                         </div>
                         <div class="row top-buffer">
                             <div class="col-md-2">
-                                <label for="txtCreateddate">Created Date</label>
+                                <label class="control-label " for="txtCreateddate">Created Date</label>
                             </div>
                             <div class="col-md-4">
                                 <input type="text" id="txtCreateddate" class="form-control" formControlName="Createddate">
                             </div>
-                            <div class="col-md-2"><label for="txtAssignedTo">Assigned to</label></div><div class="col-md-4">
+                            <div class="col-md-2" [class.has-error]="ticketForm.controls['AssignedTo'].hasError('min')"><label class="control-label " for="txtAssignedTo">Assigned to</label></div><div class="col-md-4" [class.has-error]="ticketForm.controls['AssignedTo'].hasError('min')">
                                 <dropdown [drpcollection]="users" formControlName="AssignedTo"></dropdown>
 
                                 <span *ngIf="ticketForm.controls['AssignedTo'].hasError('min')" class="alert-danger">
@@ -124,20 +126,20 @@
                             </div>
                         </div>
                         <div class="row top-buffer">
-                            <div class="col-md-2">
-                                <label for="txtPriorityId">Priority</label>
+                            <div class="col-md-2" [class.has-error]="ticketForm.controls['PriorityId'].hasError('min')">
+                                <label class="control-label " for="txtPriorityId">Priority</label>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" [class.has-error]="ticketForm.controls['PriorityId'].hasError('min')">
                                 <dropdown [drpcollection]="priorities" formControlName="PriorityId"></dropdown>
 
                                 <span *ngIf="ticketForm.controls['PriorityId'].hasError('min')" class="alert-danger">
                                     Please select Priority
                                 </span>
                             </div>
-                            <div class="col-md-2">
-                                <label for="txtTypeId">Ticket Type</label>
+                            <div class="col-md-2" [class.has-error]="ticketForm.controls['TypeId'].hasError('min')">
+                                <label class="control-label " for="txtTypeId">Ticket Type</label>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" [class.has-error]="ticketForm.controls['TypeId'].hasError('min')">
                                 <dropdown [drpcollection]="types" formControlName="TypeId"></dropdown>
 
                                 <span *ngIf="ticketForm.controls['TypeId'].hasError('min')" class="alert-danger">
@@ -146,20 +148,20 @@
                             </div>
                         </div>
                         <div class="row top-buffer">
-                            <div class="col-md-2">
-                                <label for="txtApplicationId">Application</label>
+                            <div class="col-md-2" [class.has-error]="ticketForm.controls['ApplicationId'].hasError('min')">
+                                <label class="control-label " for="txtApplicationId">Application</label>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" [class.has-error]="ticketForm.controls['ApplicationId'].hasError('min')">
                                 <dropdown [drpcollection]="applications" formControlName="ApplicationId"></dropdown>
 
                                 <span *ngIf="ticketForm.controls['ApplicationId'].hasError('min')" class="alert-danger">
                                     Please select Application
                                 </span>
                             </div>
-                            <div class="col-md-2">
-                                <label for="txtModuleID">Module</label>
+                            <div class="col-md-2" [class.has-error]="ticketForm.controls['ModuleID'].hasError('min')">
+                                <label class="control-label " for="txtModuleID">Module</label>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" [class.has-error]="ticketForm.controls['ModuleID'].hasError('min')">
                                 <dropdown [drpcollection]="modules" formControlName="ModuleID"></dropdown>
 
 
@@ -170,20 +172,20 @@
                         </div>
 
                         <div class="row top-buffer">
-                            <div class="col-md-2">
-                                <label for="txtApplicationId">Root Cause</label>
+                            <div class="col-md-2" [class.has-error]="ticketForm.controls['RootCauseId'].hasError('min')">
+                                <label class="control-label " for="txtApplicationId">Root Cause</label>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" [class.has-error]="ticketForm.controls['RootCauseId'].hasError('min')">
                                 <dropdown [drpcollection]="rootcauses" formControlName="RootCauseId"></dropdown>
 
                                 <span *ngIf="ticketForm.controls['RootCauseId'].hasError('min')" class="alert-danger">
                                     Please select Root Cause
                                 </span>
                             </div>
-                            <div class="col-md-2">
-                                <label for="txtModuleID">Resolution Deadline</label>
+                            <div class="col-md-2" [class.has-error]="ticketForm.controls['ResolutionDeadline'].hasError('required')">
+                                <label class="control-label " for="txtResolutionDeadline">Resolution Deadline</label>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" [class.has-error]="ticketForm.controls['ResolutionDeadline'].hasError('required')">
                                 <input type="text" id="txtResolutionDeadline" class="form-control" formControlName="ResolutionDeadline">
                                 <span *ngIf="ticketForm.controls['ResolutionDeadline'].hasError('required')" class="alert-danger">
                                     Please Enter Resolution Deadline
@@ -192,8 +194,8 @@
                         </div>
 
                         <div class="row top-buffer">
-                            <div class="col-md-2"><label for="txtCoommnets">Comments</label></div>
-                            <div class="col-md-10">
+                            <div class="col-md-2" [class.has-error]="ticketForm.controls['Coommnets'].hasError('required')"><label class="control-label " for="txtCoommnets">Comments</label></div>
+                            <div class="col-md-10" [class.has-error]="ticketForm.controls['Coommnets'].hasError('required')">
                                 <textarea rows="4" id="txtCoommnets" class="form-control" style="min-width: 100%" formControlName="Coommnets"></textarea>
 
                                 <div *ngIf="ticketForm.controls['Coommnets'].touched && !ticketForm.controls['Coommnets'].valid">
@@ -235,7 +237,7 @@
                             </div>
                             <div class='row'>
                                 <div class="col-md-9">
-                                    <label for="image1">  File</label>
+                                    <label class="control-label " for="image1">  File</label>
                                     <input id="fileupload" type="file" class="form-control" (change)=fileEvent($event) />
                                 </div>
                                 <div class="col-md-3 top-buffer">
