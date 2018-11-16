@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { AdminService } from '../Service/admin.service';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, ValidatorFn } from '@angular/forms';
 import { IkeyValuePair } from '../Model/keyValuePair';
 import { Ticket } from '../Model/ticketModel';
 import { DBOperation } from '../Shared/enum';
@@ -93,7 +93,7 @@ export class TicketComponent implements OnInit {
             'Coommnets': new FormControl(this.ticket.Coommnets, [removeSpaces, Validators.required]),
             'UpdatedBy': new FormControl(this.ticket.UpdatedBy),
             'LastModifiedon': new FormControl(this.ticket.LastModifiedon)
-        });
+        }, { validator: statusValidator });
 
         this.ticketForm.controls['Createddate'].valueChanges.subscribe(value => {
             console.log(value);
@@ -297,3 +297,17 @@ export class TicketComponent implements OnInit {
     }
 
 }
+
+
+
+const statusValidator: ValidatorFn = (fg: FormGroup) => {
+    const start = new Date(fg.get('Createddate').value);
+    const end = new Date(fg.get('ResolutionDeadline').value);
+    console.log(start);
+    console.log(end);
+    console.log(end > start);
+    var diff = (start !== null && end !== null) ? end > start : 0
+    return diff > 0
+        ? null
+        : { range: true };
+};

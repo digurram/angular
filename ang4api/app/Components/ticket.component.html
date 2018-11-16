@@ -190,6 +190,9 @@
                                 <span *ngIf="ticketForm.controls['ResolutionDeadline'].hasError('required')" class="alert-danger">
                                     Please Enter Resolution Deadline
                                 </span>
+                                <span *ngIf="ticketForm.hasError('range')" class="alert-danger">
+                                    Resolution Deadline should be greater than create date
+                                </span>
                             </div>
                         </div>
 
