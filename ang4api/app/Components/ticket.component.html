@@ -115,7 +115,7 @@
                                 <label class="control-label " for="txtCreateddate">Created Date</label>
                             </div>
                             <div class="col-md-4">
-                                <input type="text" id="txtCreateddate" class="form-control" formControlName="Createddate">
+                                <input type="text" id="txtCreateddate" class="form-control" formControlName="Createddate"   />
                             </div>
                             <div class="col-md-2" [class.has-error]="ticketForm.controls['AssignedTo'].hasError('min')"><label class="control-label " for="txtAssignedTo">Assigned to</label></div><div class="col-md-4" [class.has-error]="ticketForm.controls['AssignedTo'].hasError('min')">
                                 <dropdown [drpcollection]="users" formControlName="AssignedTo"></dropdown>
