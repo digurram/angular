@@ -224,7 +224,7 @@ namespace ang4api.api
         }
 
 
-        [HttpGet, Route("GetfileAttachemnet/{id}")]
+        [HttpGet, Route("GetfileAttachemnet/{id}"), AllowAnonymous]
         public IHttpActionResult GetfileAttachemnet(int id)
         {
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
