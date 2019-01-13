@@ -357,6 +357,7 @@
   <ItemGroup>
     <Content Include="app\Components\admin.component.html" />
     <Content Include="app\Components\alert.component.html" />
+    <Content Include="app\Components\DB_data_scripts.sql" />
     <Content Include="app\Components\login.component.html" />
     <Content Include="app\Components\ticket.component.html" />
     <Content Include="Content\bootstrap.css" />
