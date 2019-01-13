@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>SQLDBProject</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{dc242ca6-adc0-48eb-94a9-5c656a48afa9}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>SQLDBProject</RootNamespace>
+    <AssemblyName>SQLDBProject</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\UserRoles.sql" />
+    <Build Include="dbo\Tables\UserMaster.sql" />
+    <Build Include="dbo\Tables\TypeMaster.sql" />
+    <Build Include="dbo\Tables\TrainingMaster.sql" />
+    <Build Include="dbo\Tables\TrainingHistory.sql" />
+    <Build Include="dbo\Tables\TradeValidationError.sql" />
+    <Build Include="dbo\Tables\Trade.sql" />
+    <Build Include="dbo\Tables\Tickets.sql" />
+    <Build Include="dbo\Tables\StatusMaster.sql" />
+    <Build Include="dbo\Tables\RootCauseMaster.sql" />
+    <Build Include="dbo\Tables\RoleMaster.sql" />
+    <Build Include="dbo\Tables\Resource.sql" />
+    <Build Include="dbo\Tables\PriorityMaster.sql" />
+    <Build Include="dbo\Tables\ModuleMaster.sql" />
+    <Build Include="dbo\Tables\Menus.sql" />
+    <Build Include="dbo\Tables\MenuPermission.sql" />
+    <Build Include="dbo\Tables\MenuItems.sql" />
+    <Build Include="dbo\Tables\FXTrade.sql" />
+    <Build Include="dbo\Tables\FinancialEventSourceSwift.sql" />
+    <Build Include="dbo\Tables\FinancialEventSourceFlatFile.sql" />
+    <Build Include="dbo\Tables\FinancialEventSource.sql" />
+    <Build Include="dbo\Tables\FileUpload.sql" />
+    <Build Include="dbo\Tables\Exception.sql" />
+    <Build Include="dbo\Tables\Entity_Link.sql" />
+    <Build Include="dbo\Tables\Entity.sql" />
+    <Build Include="dbo\Tables\EmployeeDetails.sql" />
+    <Build Include="dbo\Tables\Employee.sql" />
+    <Build Include="dbo\Tables\ApplicationMaster.sql" />
+    <Build Include="dbo\Views\vw_user_permissions.sql" />
+    <Build Include="dbo\Functions\Ufn_RoleDEscription.sql" />
+    <Build Include="dbo\Functions\ufnGetChilds.sql" />
+    <Build Include="dbo\Functions\ufn_CSVToTable.sql" />
+    <Build Include="dbo\Stored Procedures\USP_UPDATE_RootCause.sql" />
+    <Build Include="dbo\Stored Procedures\usp_mlprun.sql" />
+    <Build Include="dbo\Stored Procedures\USP_INSERT_RootCause.sql" />
+    <Build Include="dbo\Stored Procedures\USP_GETTypdMASTER.sql" />
+    <Build Include="dbo\Stored Procedures\USP_GET_StatusMASTER.sql" />
+    <Build Include="dbo\Stored Procedures\USP_GET_RootCause.sql" />
+    <Build Include="dbo\Stored Procedures\USP_GET_Resource.sql" />
+    <Build Include="dbo\Stored Procedures\USP_GET_PRIORITYMASTER.sql" />
+    <Build Include="dbo\Stored Procedures\USP_GET_ModuleMASTER.sql" />
+    <Build Include="dbo\Stored Procedures\USP_GET_ApplicationeMASTER.sql" />
+    <Build Include="dbo\Stored Procedures\usp_FinancialEventSourceSwift.sql" />
+    <Build Include="dbo\Stored Procedures\usp_FinancialEventSourceFlatFile.sql" />
+    <Build Include="dbo\Stored Procedures\usp_FinancialEventSource.sql" />
+    <Build Include="dbo\Stored Procedures\USP_AuthenticateUser.sql" />
+    <Build Include="dbo\Stored Procedures\SP_LogException.sql" />
+    <Build Include="dbo\Stored Procedures\sp_getDEtails.sql" />
+    <Build Include="dbo\Stored Procedures\Proc_GetTickets.sql" />
+    <Build Include="dbo\Stored Procedures\INS.sql" />
+    <Build Include="dbo\Stored Procedures\Fact.sql" />
+  </ItemGroup>
+</Project>

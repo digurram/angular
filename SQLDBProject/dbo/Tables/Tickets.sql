@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[Tickets] (
+    [TicketId]           INT             IDENTITY (1, 1) NOT NULL,
+    [Title]              NVARCHAR (4000) NULL,
+    [TDescription]       NVARCHAR (4000) NULL,
+    [CreatedBy]          INT             NULL,
+    [StatusId]           INT             NULL,
+    [Createddate]        DATETIME        NULL,
+    [AssignedTo]         INT             NULL,
+    [PriorityId]         INT             NULL,
+    [TypeId]             INT             NULL,
+    [ApplicationId]      INT             NULL,
+    [ModuleID]           INT             NULL,
+    [ResponseDeadline]   DATETIME        NULL,
+    [ResolutionDeadline] DATETIME        NULL,
+    [RootCauseId]        INT             NULL,
+    [Coommnets]          NVARCHAR (4000) NULL,
+    [UpdatedBy]          INT             NULL,
+    [LastModifiedon]     DATETIME        NULL,
+    CONSTRAINT [PK_Tickets] PRIMARY KEY CLUSTERED ([TicketId] ASC),
+    CONSTRAINT [FK_Tickets_ApplicationMaster] FOREIGN KEY ([ApplicationId]) REFERENCES [dbo].[ApplicationMaster] ([ApplicationId]),
+    CONSTRAINT [FK_Tickets_ModuleMaster] FOREIGN KEY ([ModuleID]) REFERENCES [dbo].[ModuleMaster] ([ModuleId]),
+    CONSTRAINT [FK_Tickets_PriorityMaster] FOREIGN KEY ([PriorityId]) REFERENCES [dbo].[PriorityMaster] ([PriorityId]),
+    CONSTRAINT [FK_Tickets_Resource] FOREIGN KEY ([UpdatedBy]) REFERENCES [dbo].[Resource] ([ResourceId]),
+    CONSTRAINT [FK_Tickets_RootCauseMaster1] FOREIGN KEY ([RootCauseId]) REFERENCES [dbo].[RootCauseMaster] ([RootCauseId]),
+    CONSTRAINT [FK_Tickets_StatusMaster] FOREIGN KEY ([StatusId]) REFERENCES [dbo].[StatusMaster] ([StatusId]),
+    CONSTRAINT [FK_Tickets_TypeMaster] FOREIGN KEY ([TypeId]) REFERENCES [dbo].[TypeMaster] ([TypeId])
+);
+
