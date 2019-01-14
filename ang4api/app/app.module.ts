@@ -21,13 +21,11 @@ import { MessageService } from './Service/message.service';
 import { NotAuthorizedComponent } from './Components/notauthorized.component';
 import { AlertComponent } from './Components/alert.component';
 import { AlertService } from './Service/alert.service';
-
-
-
+import { AddUserComponent } from './components/adduser.component';
 
 @NgModule({
     imports: [BrowserModule, ReactiveFormsModule, HttpClientModule, routing, Ng2Bs3ModalModule, FormsModule],
-    declarations: [AppComponent, AdminComponent, HomeComponent, TicketComponent, DropdownComponent, LoginComponent, PageNotFoundComponent, MenuComponent, NotAuthorizedComponent, AlertComponent],
+    declarations: [AppComponent, AdminComponent, HomeComponent, TicketComponent, DropdownComponent, LoginComponent, PageNotFoundComponent, MenuComponent, NotAuthorizedComponent, AlertComponent, AddUserComponent],
     providers: [{ provide: APP_BASE_HREF, useValue: '/' }, AdminService, AuthGuard, UserService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, MessageService, AlertService,DatePipe],
     bootstrap: [AppComponent]
 })

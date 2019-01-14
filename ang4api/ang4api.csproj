@@ -355,6 +355,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\Components\adduser.component.html" />
     <Content Include="app\Components\admin.component.html" />
     <Content Include="app\Components\alert.component.html" />
     <Content Include="app\Components\DB_data_scripts.sql" />
@@ -445,6 +446,7 @@
     <TypeScriptCompile Include="app\app.routing.ts" />
     <TypeScriptCompile Include="app\auth\auth.guard.ts" />
     <TypeScriptCompile Include="app\auth\auth.interceptor.ts" />
+    <TypeScriptCompile Include="app\Components\adduser.component.ts" />
     <TypeScriptCompile Include="app\Components\admin.component.ts" />
     <TypeScriptCompile Include="app\Components\alert.component.ts" />
     <TypeScriptCompile Include="app\Components\dropdown.component.ts" />
@@ -455,6 +457,7 @@
     <TypeScriptCompile Include="app\Components\PageNotFound.component.ts" />
     <TypeScriptCompile Include="app\Components\ticket.component.ts" />
     <TypeScriptCompile Include="app\main.ts" />
+    <TypeScriptCompile Include="app\Model\adduserModel.ts" />
     <TypeScriptCompile Include="app\Model\keyValuePair.ts" />
     <TypeScriptCompile Include="app\Model\loginModel.ts" />
     <TypeScriptCompile Include="app\Model\tdictionary.ts" />
