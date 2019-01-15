@@ -4,7 +4,7 @@
             <div class="row  top-buffer">
                 <div class="col-md-3"> <label for="txtFirstName">First Name:</label>  </div>
                 <div class="col-md-6">
-                    <input formControlName="FirstName" class="form-control">
+                    <input type="text" id="txtFirstName" formControlName="FirstName" class="form-control">
                     <div *ngIf="adduserForm.controls['FirstName'].touched && !adduserForm.controls['FirstName'].valid">
                         <span *ngIf="adduserForm.controls['FirstName'].hasError('required') " class="alert-danger">
                             First Name is required
@@ -14,9 +14,9 @@
                 </div>
             </div>
             <div class="row  top-buffer">
-                <div class="col-md-3"><label for="txtpwd">Password:</label></div>
+                <div class="col-md-3"><label for="txtLastName">Password:</label></div>
                 <div class="col-md-6">
-                    <input formControlName="LastName" class="form-control">
+                    <input type="text" id="txtLastName"  formControlName="LastName" class="form-control">
                     <div *ngIf="adduserForm.controls['LastName'].touched && !adduserForm.controls['LastName'].valid">
                         <span *ngIf="adduserForm.controls['LastName'].hasError('required') " class="alert-danger">
                             Last Name is required
@@ -25,9 +25,9 @@
                 </div>
             </div>
             <div class="row  top-buffer">
-                <div class="col-md-3"><label for="txtpwd">Password:</label></div>
+                <div class="col-md-3"><label for="txtEmailId">Password:</label></div>
                 <div class="col-md-6">
-                    <input formControlName="EmailId" class="form-control" >
+                    <input type="text" id="txtEmailId"  formControlName="EmailId" class="form-control" >
                     <div *ngIf="adduserForm.controls['EmailId'].touched && !adduserForm.controls['EmailId'].valid">
                         <span *ngIf="adduserForm.controls['EmailId'].hasError('required') " class="alert-danger">
                             Email id is required
