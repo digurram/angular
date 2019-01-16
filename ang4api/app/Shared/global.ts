@@ -19,6 +19,8 @@
     
     public static BASE_TICKET_ATTCHEMENTS = "Getattachments/";
     public static BASE_TICKET_FILE = "GetfileAttachemnet/";
+    public static BASE_ADMIN_ADDUSER = "adduser/";
+
 
     public static BASE_USER_MENU = "GetMenuitems";
     public static BASE_USER_LOGOUT = "Logout";

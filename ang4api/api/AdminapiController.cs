@@ -44,6 +44,13 @@ namespace ang4api.api
             return ToJson(TicketDB.SaveChanges());
         }
 
+        [HttpPost, Route("adduser")]
+        public HttpResponseMessage adduser([FromBody]UserModel value)
+        {
+            TicketDB.Resources.Add(new Resource() { FName = value.FirstName, Lname = value.LastName, Email = value.EmailId,Pwd="1234",Roles="2",Isactive=true });
+            return ToJson(TicketDB.SaveChanges());
+        }
+
 
 
     }

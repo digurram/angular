@@ -20,7 +20,7 @@ export class AddUserComponent implements OnInit {
     msg: string;
     //isValidationError: boolean = false;
 
-    constructor(private formBuilder: FormBuilder)  {
+    constructor(private formBuilder: FormBuilder, private _adminservice: AdminService)  {
 
     }
 
@@ -43,6 +43,20 @@ export class AddUserComponent implements OnInit {
         const result: AddUserModel = Object.assign({}, this.addUserForm.value);
         this.addUserForm.reset();
         console.log(result);
+        this._adminservice.post(Global.BASE_ADMIN_ENDPOINT + Global.BASE_ADMIN_ADDUSER, result).subscribe(
+            data => {
+                if (data == 1) //Success
+                {
+                //    this.backtosummary();
+                }
+                else {
+                    this.msg = "There is some issue in saving records, please contact to system administrator!"
+                }
+            },
+            error => {
+                this.msg = error;
+            }
+        );
     }
 
 }

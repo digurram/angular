@@ -350,6 +350,7 @@
     </Compile>
     <Compile Include="Handlers\MessageHandler.cs" />
     <Compile Include="Models\keyvalueModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
     <Compile Include="Startup.cs" />
