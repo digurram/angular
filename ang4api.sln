@@ -30,16 +30,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8DF42B48-F468-40C5-8BDF-14702903DA44}
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://anglrn.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ang4api\\ang4api.csproj
-		SccProjectName1 = ang4api
-		SccLocalPath1 = ang4api
-		SccProjectUniqueName2 = SQLDBProject\\SQLDBProject.sqlproj
-		SccProjectName2 = SQLDBProject
-		SccLocalPath2 = SQLDBProject
-	EndGlobalSection
 EndGlobal
