@@ -1,8 +1,0 @@
-﻿CREATE PROCEDURE [dbo].[USP_GET_StatusMASTER]	
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	SELECT * from StatusMaster
-	SET NOCOUNT OFF;
-END
